@@ -1,0 +1,17 @@
+{
+  "name": "eu-climate-data-hub",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "fetch:worldbank": "node scripts/fetchWorldBank.js",
+    "process:data": "node scripts/processData.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.13.6",
+    "express": "^5.2.1"
+  }
+}
