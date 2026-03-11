@@ -1,0 +1,47 @@
+# EU Climate Data Hub
+
+A Node.js data pipeline that integrates public datasets from the World Bank.
+
+## Data Sources
+
+World Bank API
+
+- GDP
+- Population
+- CO₂ emissions
+
+## Pipeline Architecture
+
+1. Data ingestion from World Bank API
+2. Raw data storage
+3. Data processing and merging
+4. Final analytics dataset
+
+## Project Structure
+
+src/
+- services → external APIs
+- pipelines → ingestion pipelines
+- processing → data transformation
+- storage → persistence logic
+
+scripts/
+- pipeline runners
+
+data/
+- raw datasets
+- processed datasets
+
+## Run the project
+
+Install dependencies:
+
+npm install
+
+Fetch data:
+
+npm run fetch:worldbank
+
+Process dataset:
+
+npm run process:data
