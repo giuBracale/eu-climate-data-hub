@@ -1,61 +1,74 @@
 const fs = require("fs")
 const path = require("path")
 
-const rawDir = path.join(__dirname, "../../data/raw")
-const outputFile = path.join(__dirname, "../../data/processed/climate_economy_dataset.json")
+const RAW_DIR = path.join(__dirname, "../../data/raw")
+const PROCESSED_DIR = path.join(__dirname, "../../data/processed")
 
-function loadData(file) {
-  const filePath = path.join(rawDir, file)
-  return JSON.parse(fs.readFileSync(filePath))[1]
+function loadData(country, file) {
+
+  const filePath = path.join(RAW_DIR, country, file)
+
+  const raw = fs.readFileSync(filePath)
+
+  return JSON.parse(raw)[1]
+
 }
 
-function mergeDatasets() {
+function mergeCountryData(country) {
 
-  const gdpData = loadData("gdp.json")
-  const populationData = loadData("population.json")
-  const co2Data = loadData("co2.json")
+  const gdpData = loadData(country, "gdp.json")
+  const populationData = loadData(country, "population.json")
+  const co2Data = loadData(country, "co2.json")
 
   const dataset = {}
 
   function insert(data, field) {
+
     data.forEach(item => {
+
       const year = item.date
 
       if (!dataset[year]) {
-        dataset[year] = { year }
+        dataset[year] = {
+          country,
+          year
+        }
       }
 
       dataset[year][field] = item.value
+
     })
+
   }
 
   insert(gdpData, "gdp")
   insert(populationData, "population")
   insert(co2Data, "co2")
 
-  const result = Object.values(dataset)
+  return Object.values(dataset)
 
-  return result
-}
-
-function saveDataset(data) {
-
-  const processedDir = path.join(__dirname, "../../data/processed")
-
-  if (!fs.existsSync(processedDir)) {
-    fs.mkdirSync(processedDir)
-  }
-
-  fs.writeFileSync(outputFile, JSON.stringify(data, null, 2))
 }
 
 function runProcessing() {
 
-  const dataset = mergeDatasets()
+  const countries = fs.readdirSync(RAW_DIR)
 
-  saveDataset(dataset)
+  fs.mkdirSync(PROCESSED_DIR, { recursive: true })
 
-  console.log("Processed dataset created")
+  countries.forEach(country => {
+
+    const dataset = mergeCountryData(country)
+
+    const outputFile = path.join(
+      PROCESSED_DIR,
+      `climate_${country}.json`
+    )
+
+    fs.writeFileSync(outputFile, JSON.stringify(dataset, null, 2))
+
+    console.log(`Processed dataset created for ${country}`)
+
+  })
 
 }
 

@@ -10,13 +10,13 @@ async function runWorldBankPipeline(country) {
 
       const data = await fetchIndicator(country, indicator)
 
-      saveRawData(`${name}.json`, data)
+      saveRawData(country, `${name}.json`, data)
 
-      console.log(`Saved ${name}`)
+      console.log(`Saved ${name} for ${country}`)
 
     } catch (error) {
 
-      console.error(`Error processing ${name}`, error.message)
+      console.error(`Error processing ${name} for ${country}`, error.message)
 
     }
 

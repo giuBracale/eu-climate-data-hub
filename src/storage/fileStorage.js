@@ -3,9 +3,13 @@ const path = require("path")
 
 const RAW_DIR = path.join(__dirname, "../../data/raw")
 
-function saveRawData(filename, data) {
+function saveRawData(country, filename, data) {
 
-  const filePath = path.join(RAW_DIR, filename)
+  const countryDir = path.join(RAW_DIR, country)
+
+  fs.mkdirSync(countryDir, { recursive: true })
+
+  const filePath = path.join(countryDir, filename)
 
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
 
