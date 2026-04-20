@@ -1,21 +1,34 @@
-const service = require("../../src/services/climateDataService")
+const service = require("../../src/domain/services/climateDataService")
 
 describe("Climate Data Service", () => {
 
-  test("load dataset for country", () => {
+  const dataset = [
+    { year: "2000", gdp: 100, population: 10, co2: 5 },
+    { year: "2010", gdp: 150, population: 15, co2: 7 },
+    { year: "2020", gdp: 200, population: 20, co2: 10 }
+  ]
 
-    const dataset = service.getDataset("ITA")
+  test("should return latest record", () => {
+    const latest = service.getLatest(dataset)
 
-    expect(Array.isArray(dataset)).toBe(true)
-
+    expect(latest.year).toBe("2020")
+    expect(latest).toHaveProperty("gdp")
   })
 
-  test("latest record should contain year", () => {
+  test("should compute trend correctly", () => {
+    const trend = service.getTrend(dataset)
 
-    const latest = service.getLatest("ITA")
+    expect(trend).toHaveProperty("period")
+    expect(trend.gdp_growth).toBe(100)
+    expect(trend.population_growth).toBe(10)
+    expect(trend.co2_change).toBe(5)
+  })
 
-    expect(latest).toHaveProperty("year")
+  test("should get data by year", () => {
+    const record = service.getByYear(dataset, "2010")
 
+    expect(record.year).toBe("2010")
+    expect(record.gdp).toBe(150)
   })
 
 })
