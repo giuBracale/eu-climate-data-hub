@@ -1,8 +1,8 @@
 # EU Climate Data Hub
 
-A backend system that ingests, processes, and exposes European CO₂ and economic data through a structured API.
+A backend system that integrates, processes, and exposes European CO₂ and economic data through a structured API.
 
-This project simulates a real-world data platform by integrating public datasets from the World Bank and transforming them into a unified analytics-ready dataset.
+The project simulates a real-world data platform, combining multiple public datasets (World Bank) into a unified, analytics-ready system with end-to-end data pipelines.
 
 ---
 
@@ -20,6 +20,9 @@ This project simulates a real-world data platform by integrating public datasets
 
 The system is designed with a production-inspired architecture:
 
+### Architecture flow
+
+```
 [World Bank API]
 ↓
 Ingestion Pipeline
@@ -35,7 +38,7 @@ Repository Layer
 Domain Services
 ↓
 REST API
-
+```
 
 ### Layers
 
@@ -71,6 +74,7 @@ Merges and transforms raw datasets into a unified format.
 
 node src/pipelines/climateDataProcessingPipeline.js
 
+---
 
 ## API Endpoints
 
@@ -82,9 +86,15 @@ GET /api/countries/:country/climate-data
 GET /api/countries/:country/climate-data/latest
 GET /api/countries/:country/climate-data/trend
 
-Example:
+### Example:
 
 GET /api/countries/ITA/climate-data/trend
+
+### Example request
+
+curl http://localhost:3000/api/countries/ITA/climate-data/trend
+
+---
 
 ## Testing
 
@@ -97,6 +107,8 @@ The project includes:
 API tests (integration)
 Domain tests (unit)
 
+---
+
 ## Project Structure
 src/
 ├── api/                # HTTP layer
@@ -107,16 +119,21 @@ src/
 ├── utils/
 └── index.js
 
-## Design Decisions
-Separation of concerns between domain logic and infrastructure
-Pipelines designed as independent, executable units
-Domain layer operates on pure data (no IO dependencies)
-Data is stored locally for simplicity, but the architecture supports external storage
+---
 
+## Design Decisions
+-Separation of concerns between domain logic and infrastructure
+-Pipelines designed as independent, executable units
+-Domain layer operates on pure data (no IO dependencies)
+-Data is stored locally for simplicity, but the architecture supports external storage
+
+---
 
 ## Notes
 Raw and processed data are generated locally via pipelines
 Some recent data points may contain null values due to missing data from the source APIs
+
+---
 
 ## Why this project
 
@@ -126,9 +143,12 @@ ingesting external datasets
 transforming and normalizing data
 exposing it through a clean API
 
+---
+
 ## Future Improvements
 Add database integration (PostgreSQL)
 Introduce caching layer
 Deploy as a cloud service
 Add data visualization layer
 
+---
