@@ -1,4 +1,7 @@
 # EU Climate Data Hub
+## Overview
+
+This project simulates a production-like backend system for data integration and processing.
 
 A backend system that integrates, processes, and exposes European CO₂ and economic data through a structured API.
 
@@ -22,7 +25,7 @@ The system is designed with a production-inspired architecture:
 
 ### Architecture flow
 
-```
+```plaintext
 [World Bank API]
 ↓
 Ingestion Pipeline
@@ -65,15 +68,17 @@ Data is retrieved from the World Bank API:
 
 Fetches raw data from the World Bank API and stores it locally.
 
+``` bash
 node src/pipelines/worldbankIngestion.pipeline.js ITA
-
+```
 
 ### 2. Processing
 
 Merges and transforms raw datasets into a unified format.
 
+``` bash
 node src/pipelines/climateDataProcessingPipeline.js
-
+```
 ---
 
 ## API Endpoints
@@ -110,6 +115,8 @@ Domain tests (unit)
 ---
 
 ## Project Structure
+
+```plaintext
 src/
 ├── api/                # HTTP layer
 ├── domain/             # business logic
@@ -118,14 +125,15 @@ src/
 ├── config/
 ├── utils/
 └── index.js
+```
 
 ---
 
 ## Design Decisions
--Separation of concerns between domain logic and infrastructure
--Pipelines designed as independent, executable units
--Domain layer operates on pure data (no IO dependencies)
--Data is stored locally for simplicity, but the architecture supports external storage
+- Separation of concerns between domain logic and infrastructure
+- Pipelines designed as independent, executable units
+- Domain layer operates on pure data (no IO dependencies)
+- Data is stored locally for simplicity, but the architecture supports external storage
 
 ---
 
@@ -152,3 +160,24 @@ Deploy as a cloud service
 Add data visualization layer
 
 ---
+
+
+## Quick Start
+
+Install dependencies:
+
+```bash
+npm install
+```
+Run ingestion:
+```bash
+node src/pipelines/worldbankIngestion.pipeline.js ITA
+```
+Run processing:
+```bash
+node src/pipelines/climateDataProcessingPipeline.js
+```
+Start server:
+```bash
+node src/index.js
+```
