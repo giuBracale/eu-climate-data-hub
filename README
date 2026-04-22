@@ -1,47 +1,134 @@
 # EU Climate Data Hub
 
-A Node.js data pipeline that integrates public datasets from the World Bank.
+A backend system that ingests, processes, and exposes European CO₂ and economic data through a structured API.
+
+This project simulates a real-world data platform by integrating public datasets from the World Bank and transforming them into a unified analytics-ready dataset.
+
+---
+
+## Key Features
+
+- Data ingestion from external APIs (World Bank)
+- ETL pipeline for data processing and normalization
+- Clean separation between domain logic and infrastructure
+- REST API to access processed climate data
+- Automated tests for API and domain logic
+
+---
+
+## Architecture
+
+The system is designed with a production-inspired architecture:
+
+[World Bank API]
+↓
+Ingestion Pipeline
+↓
+Raw Data Storage
+↓
+Processing Pipeline
+↓
+Processed Dataset
+↓
+Repository Layer
+↓
+Domain Services
+↓
+REST API
+
+
+### Layers
+
+- **API Layer** → controllers and routes
+- **Domain Layer** → pure business logic
+- **Infrastructure Layer** → external APIs and storage
+- **Pipelines** → data ingestion and processing
+
+---
 
 ## Data Sources
 
-World Bank API
+Data is retrieved from the World Bank API:
 
 - GDP
 - Population
 - CO₂ emissions
 
-## Pipeline Architecture
+---
 
-1. Data ingestion from World Bank API
-2. Raw data storage
-3. Data processing and merging
-4. Final analytics dataset
+## Pipelines
+
+### 1. Ingestion
+
+Fetches raw data from the World Bank API and stores it locally.
+
+node src/pipelines/worldbankIngestion.pipeline.js ITA
+
+
+### 2. Processing
+
+Merges and transforms raw datasets into a unified format.
+
+node src/pipelines/climateDataProcessingPipeline.js
+
+
+## API Endpoints
+
+Start the server:
+
+node src/index.js
+Available endpoints:
+GET /api/countries/:country/climate-data
+GET /api/countries/:country/climate-data/latest
+GET /api/countries/:country/climate-data/trend
+
+Example:
+
+GET /api/countries/ITA/climate-data/trend
+
+## Testing
+
+Run all tests:
+
+npm test
+
+The project includes:
+
+API tests (integration)
+Domain tests (unit)
 
 ## Project Structure
-
 src/
-- services → external APIs
-- pipelines → ingestion pipelines
-- processing → data transformation
-- storage → persistence logic
+├── api/                # HTTP layer
+├── domain/             # business logic
+├── infrastructure/     # external systems (API, storage)
+├── pipelines/          # ETL processes
+├── config/
+├── utils/
+└── index.js
 
-scripts/
-- pipeline runners
+## Design Decisions
+Separation of concerns between domain logic and infrastructure
+Pipelines designed as independent, executable units
+Domain layer operates on pure data (no IO dependencies)
+Data is stored locally for simplicity, but the architecture supports external storage
 
-data/
-- raw datasets
-- processed datasets
 
-## Run the project
+## Notes
+Raw and processed data are generated locally via pipelines
+Some recent data points may contain null values due to missing data from the source APIs
 
-Install dependencies:
+## Why this project
 
-npm install
+This project was built to simulate how real-world backend systems handle data integration:
 
-Fetch data:
+ingesting external datasets
+transforming and normalizing data
+exposing it through a clean API
 
-npm run fetch:worldbank
+## Future Improvements
+Add database integration (PostgreSQL)
+Introduce caching layer
+Deploy as a cloud service
+Add data visualization layer
 
-Process dataset:
-
-npm run process:data
