@@ -2,7 +2,9 @@ const fs = require("fs")
 const path = require("path")
 
 const RAW_DIR = path.join(__dirname, "../../data/raw")
-const PROCESSED_DIR = path.join(__dirname, "../../data/processed")
+//const PROCESSED_DIR = path.join(__dirname, "../../data/processed")
+
+const repository = require("../infrastructure/database/climateRepository")
 
 function loadData(country, file) {
   const filePath = path.join(RAW_DIR, country, file)
@@ -25,7 +27,7 @@ function mergeCountryData(country) {
         dataset[year] = { country, year }
       }
 
-      dataset[year][field] = item.value
+      dataset[year][field] = item.value ?? null
     })
   }
 
@@ -33,10 +35,12 @@ function mergeCountryData(country) {
   insert(populationData, "population")
   insert(co2Data, "co2")
 
-  return Object.values(dataset)
+  return Object.values(dataset).filter(
+    d => d.gdp || d.population || d.co2
+  )
 }
 
-function runProcessing() {
+async function runProcessing() {
   console.log("\n⚙️ Starting processing pipeline...\n")
 
   const countries = fs.readdirSync(RAW_DIR)
@@ -46,26 +50,19 @@ function runProcessing() {
     process.exit(1)
   }
 
-  fs.mkdirSync(PROCESSED_DIR, { recursive: true })
-
-  countries.forEach(country => {
+  for (const country of countries) {
     try {
       console.log(`→ Processing ${country}...`)
 
       const dataset = mergeCountryData(country)
 
-      const outputFile = path.join(
-        PROCESSED_DIR,
-        `climate_${country}.json`
-      )
+      await repository.saveMany(dataset)
 
-      fs.writeFileSync(outputFile, JSON.stringify(dataset, null, 2))
-
-      console.log(`✔ Processed dataset created for ${country}\n`)
+      console.log(`✔ Saved dataset to DB for ${country}\n`)
     } catch (err) {
       console.error(`✖ Error processing ${country}:`, err.message)
     }
-  })
+  }
 
   console.log("✅ Processing completed\n")
 }
@@ -80,4 +77,9 @@ module.exports = {
 
 if (require.main === module) {
   runProcessing()
+    .then(() => process.exit(0))
+    .catch(err => {
+      console.error(err)
+      process.exit(1)
+    })
 }

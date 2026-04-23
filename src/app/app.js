@@ -10,4 +10,17 @@ app.use(express.json())
 
 app.use("/api", climateRoutes)
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "EU Climate Data API",
+    endpoints: {
+      all: "/api/countries/{country}/climate-data",
+      latest: "/api/countries/{country}/climate-data/latest",
+      trend: "/api/countries/{country}/climate-data/trend",
+      byYear: "/api/countries/{country}/climate-data/{year}"
+    },
+    docs: "/api-docs"
+  })
+})
+
 module.exports = app
