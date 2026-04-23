@@ -3,9 +3,9 @@
 
 This project simulates a production-like backend system for data integration and processing.
 
-A backend system that integrates, processes, and exposes European CO₂ and economic data through a structured API.
+It integrates, processes, and exposes climate and economic data (CO₂, GDP, population) through a structured REST API.
 
-The project simulates a real-world data platform, combining multiple public datasets (World Bank) into a unified, analytics-ready system with end-to-end data pipelines.
+The system replicates a real-world data platform by combining multiple public datasets (World Bank), transforming them through ETL pipelines, and persisting them in a PostgreSQL database using Prisma.
 
 ---
 
@@ -13,6 +13,7 @@ The project simulates a real-world data platform, combining multiple public data
 
 - Data ingestion from external APIs (World Bank)
 - ETL pipeline for data processing and normalization
+- PostgreSQL database integration with Prisma ORM
 - Clean separation between domain logic and infrastructure
 - REST API to access processed climate data
 - Automated tests for API and domain logic
@@ -30,11 +31,11 @@ The system is designed with a production-inspired architecture:
 ↓
 Ingestion Pipeline
 ↓
-Raw Data Storage
+Raw Data Storage (JSON)
 ↓
 Processing Pipeline
 ↓
-Processed Dataset
+PostgreSQL (via Prisma)
 ↓
 Repository Layer
 ↓
@@ -47,7 +48,7 @@ REST API
 
 - **API Layer** → controllers and routes
 - **Domain Layer** → pure business logic
-- **Infrastructure Layer** → external APIs and storage
+- **Infrastructure Layer** → database and external APIs
 - **Pipelines** → data ingestion and processing
 
 ---
@@ -62,6 +63,21 @@ Data is retrieved from the World Bank API:
 
 ---
 
+## Database
+
+The system uses PostgreSQL with Prisma ORM to persist processed data.
+
+### Schema
+
+```plaintext
+ClimateData
+- country
+- year
+- gdp
+- population
+- co2
+```
+
 ## Pipelines
 
 ### 1. Ingestion
@@ -74,7 +90,7 @@ node src/pipelines/worldbankIngestion.pipeline.js ITA
 
 ### 2. Processing
 
-Merges and transforms raw datasets into a unified format.
+Merges and transforms raw datasets and persists them into PostgreSQL.
 
 ``` bash
 node src/pipelines/climateDataProcessingPipeline.js
@@ -85,25 +101,18 @@ node src/pipelines/climateDataProcessingPipeline.js
 
 Base URL: http://localhost:3000
 
-### Get all climate data
-GET /api/countries/{country}/climate-data
+| Endpoint | Description |
+|--------|------------|
+| GET /api/countries/{country}/climate-data | Get full dataset |
+| GET /api/countries/{country}/climate-data/{year} | Get data for a specific year |
+| GET /api/countries/{country}/climate-data/latest | Get latest available data |
+| GET /api/countries/{country}/climate-data/trend | Get trend analysis |
 
-### Get data by year
-GET /api/countries/{country}/climate-data/{year}
+### Example
 
-### Get latest data
-GET /api/countries/{country}/climate-data/latest
-
-### Get trend analysis
-GET /api/countries/{country}/climate-data/trend
-
-### Example:
-
-GET /api/countries/ITA/climate-data/trend
-
-### Example request
-
+```bash
 curl http://localhost:3000/api/countries/ITA/climate-data/trend
+```
 
 ---
 
@@ -126,7 +135,7 @@ Domain tests (unit)
 src/
 ├── api/                # HTTP layer
 ├── domain/             # business logic
-├── infrastructure/     # external systems (API, storage)
+├── infrastructure/     # database and external APIs
 ├── pipelines/          # ETL processes
 ├── config/
 ├── utils/
@@ -139,13 +148,13 @@ src/
 - Separation of concerns between domain logic and infrastructure
 - Pipelines designed as independent, executable units
 - Domain layer operates on pure data (no IO dependencies)
-- Data is stored locally for simplicity, but the architecture supports external storage
+- PostgreSQL is used to simulate a real persistence layer
 
 ---
 
 ## Notes
-Raw and processed data are generated locally via pipelines
-Some recent data points may contain null values due to missing data from the source APIs
+Raw data is generated via ingestion pipelines  
+Processed data is stored in PostgreSQL
 
 ---
 
@@ -153,17 +162,19 @@ Some recent data points may contain null values due to missing data from the sou
 
 This project was built to simulate how real-world backend systems handle data integration:
 
-ingesting external datasets
-transforming and normalizing data
-exposing it through a clean API
+- ingesting external datasets
+- transforming and normalizing data through ETL pipelines
+- persisting data in a relational database
+- exposing it through a structured REST API
 
 ---
 
 ## Future Improvements
-Add database integration (PostgreSQL)
-Introduce caching layer
-Deploy as a cloud service
-Add data visualization layer
+
+- Dockerization (app + database)
+- Caching layer (Redis)
+- Cloud deployment
+- Data visualization layer
 
 ---
 
