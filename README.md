@@ -17,6 +17,7 @@ The system replicates a real-world data platform by combining multiple public da
 - Clean separation between domain logic and infrastructure
 - REST API to access processed climate data
 - Automated tests for API and domain logic
+- Dockerized environment with automated startup pipelines
 
 ---
 
@@ -171,10 +172,10 @@ This project was built to simulate how real-world backend systems handle data in
 
 ## Future Improvements
 
-- Dockerization (app + database)
 - Caching layer (Redis)
 - Cloud deployment
 - Data visualization layer
+- Multi-country ingestion and scheduling
 
 ---
 
@@ -198,3 +199,17 @@ Start server:
 ```bash
 node src/index.js
 ```
+
+## Run with Docker
+
+```bash
+docker-compose up --build
+```
+
+The system will automatically:
+
+- start PostgreSQL
+- run database migrations
+- fetch data from the World Bank API
+- process and store data in the database
+- start the API server

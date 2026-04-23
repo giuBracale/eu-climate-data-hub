@@ -41,12 +41,12 @@ function mergeCountryData(country) {
 }
 
 async function runProcessing() {
-  console.log("\n⚙️ Starting processing pipeline...\n")
+  console.log("\n Starting processing pipeline...\n")
 
   const countries = fs.readdirSync(RAW_DIR)
 
   if (!countries.length) {
-    console.error("❌ No raw data found. Run ingestion first.")
+    console.error(" No raw data found. Run ingestion first.")
     process.exit(1)
   }
 
@@ -64,7 +64,7 @@ async function runProcessing() {
     }
   }
 
-  console.log("✅ Processing completed\n")
+  console.log(" Processing completed\n")
 }
 
 module.exports = {
@@ -72,7 +72,7 @@ module.exports = {
 }
 
 //
-// ▶️ RUNNER
+//  RUNNER
 //
 
 if (require.main === module) {
