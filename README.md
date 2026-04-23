@@ -100,7 +100,7 @@ node src/pipelines/climateDataProcessingPipeline.js
 
 ## API Endpoints
 
-Base URL: http://localhost:3000
+Base URL: http://localhost:3001
 
 | Endpoint | Description |
 |--------|------------|
@@ -112,9 +112,10 @@ Base URL: http://localhost:3000
 ### Example
 
 ```bash
-curl http://localhost:3000/api/countries/ITA/climate-data/trend
+curl http://localhost:3001/api/countries/ITA/climate-data/trend
 ```
-
+> Note: When running locally without Docker, the API is available on port 3000.
+> When running with Docker, it is exposed on port 3001.
 ---
 
 ## Testing
