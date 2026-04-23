@@ -16,7 +16,7 @@ function saveRawData(country, filename, data) {
 }
 
 async function runWorldBankPipeline(country) {
-  console.log(`\n🌍 Starting ingestion for ${country}...\n`)
+  console.log(`\n Starting ingestion for ${country}...\n`)
 
   for (const [name, indicator] of Object.entries(indicators)) {
     try {
@@ -32,7 +32,7 @@ async function runWorldBankPipeline(country) {
     }
   }
 
-  console.log(`✅ Ingestion completed for ${country}\n`)
+  console.log(` Ingestion completed for ${country}\n`)
 }
 
 module.exports = {
@@ -40,24 +40,24 @@ module.exports = {
 }
 
 //
-// ▶️ RUNNER (esecuzione da CLI)
+//  RUNNER (esecuzione da CLI)
 //
 
 if (require.main === module) {
   const country = process.argv[2]
 
   if (!country) {
-    console.error("❌ Please provide a country code (e.g. ITA)")
+    console.error(" Please provide a country code (e.g. ITA)")
     process.exit(1)
   }
 
   runWorldBankPipeline(country)
     .then(() => {
-      console.log("🚀 Pipeline finished successfully")
+      console.log(" Pipeline finished successfully")
       process.exit(0)
     })
     .catch((err) => {
-      console.error("💥 Pipeline failed:", err)
+      console.error(" Pipeline failed:", err)
       process.exit(1)
     })
 }
