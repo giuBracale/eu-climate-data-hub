@@ -1,5 +1,33 @@
-node_modules
+# dependencies
+node_modules/
+
+# environment
 .env
-data/raw
-data/processed
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+
+# build / generated
+dist/
+build/
+
+# prisma generated client
+src/generated/prisma/
+
+# data
+data/
+
+# private files
 Pitch
+
+# IDE
+.vscode/
+.idea/
+
+# misc
+coverage/

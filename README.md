@@ -83,13 +83,19 @@ node src/pipelines/climateDataProcessingPipeline.js
 
 ## API Endpoints
 
-Start the server:
+Base URL: http://localhost:3000
 
-node src/index.js
-Available endpoints:
-GET /api/countries/:country/climate-data
-GET /api/countries/:country/climate-data/latest
-GET /api/countries/:country/climate-data/trend
+### Get all climate data
+GET /api/countries/{country}/climate-data
+
+### Get data by year
+GET /api/countries/{country}/climate-data/{year}
+
+### Get latest data
+GET /api/countries/{country}/climate-data/latest
+
+### Get trend analysis
+GET /api/countries/{country}/climate-data/trend
 
 ### Example:
 
