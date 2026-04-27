@@ -1,4 +1,18 @@
 # EU Climate Data Hub
+A production-style backend system for data ingestion processing, and exposure of climate and economic data.
+
+## Quick Start (1 minute)
+
+```bash
+git clone https://github.com/giuBracale/eu-climate-data-hub
+cd eu-climate-data-hub
+docker-compose up --build
+```
+Open Swagger UI:
+```
+http://localhost:3001/docs
+```
+
 ## Overview
 
 This project simulates a production-like backend system for data integration and processing.
@@ -118,16 +132,32 @@ curl http://localhost:3001/api/countries/ITA/climate-data/trend
 > When running with Docker, it is exposed on port 3001.
 ---
 
+## Example Response
+
+GET /api/countries/ITA/climate-data/latest
+
+```json
+{
+  "country": "Italy",
+  "year": 2020,
+  "gdp": 1880.0,
+  "population": 59554023,
+  "co2": 320.5
+}
+```
+
+
 ## Testing
 
 Run all tests:
 
+```bash
 npm test
+```
+Includes:
 
-The project includes:
-
-API tests (integration)
-Domain tests (unit)
+- API integration tests
+- Domain unit tests
 
 ---
 
@@ -154,6 +184,14 @@ src/
 
 ---
 
+## Trade-offs
+
+- Data is stored locally instead of using a data warehouse for simplicity
+- No caching layer to keep the pipeline transparent
+- Pipelines are manually triggered (no scheduler yet)
+
+
+
 ## Notes
 Raw data is generated via ingestion pipelines  
 Processed data is stored in PostgreSQL
@@ -162,12 +200,17 @@ Processed data is stored in PostgreSQL
 
 ## Why this project
 
-This project was built to simulate how real-world backend systems handle data integration:
+This project simulates a real-world data platform where raw external data is unreliable and must be:
 
-- ingesting external datasets
-- transforming and normalizing data through ETL pipelines
-- persisting data in a relational database
-- exposing it through a structured REST API
+- ingested from heterogeneous APIs
+- normalized into a consistent schema
+- processed through deterministic pipelines
+- exposed through a clean API layer
+
+The focus is on:
+- data consistency
+- separation of concerns
+- maintainability of pipelines
 
 ---
 
@@ -181,7 +224,7 @@ This project was built to simulate how real-world backend systems handle data in
 ---
 
 
-## Quick Start
+## Local Development (without Docker)
 
 Install dependencies:
 
