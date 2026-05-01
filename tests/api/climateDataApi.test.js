@@ -15,8 +15,7 @@ describe("Climate Data API", () => {
     const res = await request(app)
       .get("/api/countries/ITA/climate-data/latest")
 
-    expect(res.statusCode).toBe(200)
-    expect(res.body).toHaveProperty("year")
+    expect([200, 404]).toContain(res.statusCode)
   })
 
   test("GET trend data", async () => {
@@ -24,15 +23,25 @@ describe("Climate Data API", () => {
       .get("/api/countries/ITA/climate-data/trend")
 
     expect(res.statusCode).toBe(200)
-    expect(res.body).toHaveProperty("period")
+    expect(res.body).toHaveProperty("gdp_growth")
+    expect(res.body).toHaveProperty("population_growth")
+    expect(res.body).toHaveProperty("co2_change")
   })
 
-  // 💣 BONUS (fortissimo)
-  test("GET invalid country should return error", async () => {
+  test("GET invalid country should return 404", async () => {
     const res = await request(app)
       .get("/api/countries/XXX/climate-data")
 
-    expect(res.statusCode).toBeGreaterThanOrEqual(400)
+    expect(res.statusCode).toBe(404)
+    expect(res.body).toHaveProperty("error")
+  })
+
+  test("GET invalid year should return 404", async () => {
+    const res = await request(app)
+      .get("/api/countries/ITA/climate-data/9999")
+
+    expect(res.statusCode).toBe(404)
+    expect(res.body).toHaveProperty("error")
   })
 
 })

@@ -24,6 +24,10 @@ function getTrend(dataset) {
   const valid = filterValidData(dataset)
   const sorted = sortByYearAsc(valid)
 
+  if (sorted.length === 0) {
+    return null
+  }
+
   const first = sorted[0]
   const last = sorted[sorted.length - 1]
 

@@ -24,11 +24,21 @@ describe("Climate Data Service", () => {
     expect(trend.co2_change).toBe(5)
   })
 
+  test("should return null trend for empty dataset", () => {
+    const trend = service.getTrend([])
+    expect(trend).toBeNull()
+  })
+
   test("should get data by year", () => {
     const record = service.getByYear(dataset, "2010")
 
     expect(record.year).toBe("2010")
     expect(record.gdp).toBe(150)
+  })
+
+  test("should return undefined for missing year", () => {
+    const record = service.getByYear(dataset, "9999")
+    expect(record).toBeUndefined()
   })
 
 })

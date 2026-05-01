@@ -5,6 +5,8 @@ const app = express()
 const swaggerUi = require("swagger-ui-express")
 const swaggerSpec = require("../docs/swagger")
 
+const errorHandler = require("../api/middleware/errorHandler")
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use(express.json())
 
@@ -22,5 +24,8 @@ app.get("/", (req, res) => {
     docs: "/api-docs"
   })
 })
+
+
+app.use(errorHandler)
 
 module.exports = app
