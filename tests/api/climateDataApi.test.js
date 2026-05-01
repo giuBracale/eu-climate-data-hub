@@ -23,9 +23,9 @@ describe("Climate Data API", () => {
       .get("/api/countries/ITA/climate-data/trend")
 
     expect(res.statusCode).toBe(200)
-    expect(res.body).toHaveProperty("gdp_growth")
-    expect(res.body).toHaveProperty("population_growth")
-    expect(res.body).toHaveProperty("co2_change")
+    expect(res.body).toHaveProperty("gdpGrowth")
+    expect(res.body).toHaveProperty("populationGrowth")
+    expect(res.body).toHaveProperty("co2Change")
   })
 
   test("GET invalid country should return 404", async () => {
