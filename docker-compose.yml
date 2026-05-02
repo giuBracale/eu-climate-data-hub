@@ -11,16 +11,23 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+  ai-processor:
+    build: ./ai-processor
+    container_name: climate-ai
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./ai-processor/.env
   app:
     build: .
     container_name: climate-api
     depends_on:
       - postgres
+      - ai-processor
     ports:
       - "3001:3000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/climate
-
+    command: sh -c "npx prisma migrate deploy && node src/index.js"
 volumes:
   postgres_data:

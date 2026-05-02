@@ -64,6 +64,7 @@ router.get(
   controller.getClimateTrend
 )
 
+
 /**
  * @swagger
  * /countries/{country}/climate-data/{year}:
@@ -86,8 +87,44 @@ router.get(
  *         description: Climate data for the specified year
  */
 router.get(
-  "/countries/:country/climate-data/:year",
+  "/countries/:country/climate-data/year/:year",
   controller.getClimateDataByYear
+)
+
+
+/**
+ * @swagger
+ * /countries/{country}/climate-data/insights:
+ *   get:
+ *     summary: Get AI-generated climate insights
+ *     description: Returns AI-based analysis of climate data for a country
+ *     parameters:
+ *       - in: path
+ *         name: country
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: ITA
+ *     responses:
+ *       200:
+ *         description: AI insights retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 country:
+ *                   type: string
+ *                 insight:
+ *                   type: string
+ *       404:
+ *         description: No data found
+ *       500:
+ *         description: AI service error
+ */
+router.get(
+  "/countries/:country/climate-data/insights",
+  controller.getClimateInsights
 )
 
 module.exports = router

@@ -22,6 +22,7 @@ const {
   validateYear
 } = require("../validators/climateDataValidator")
 
+const aiService = require("../../infrastructure/ai/aiService")
 
 // GET /api/countries/:country/climate-data
 const getAllClimateData = asyncHandler(async (req, res) => {
@@ -107,9 +108,31 @@ const getClimateTrend = asyncHandler(async (req, res) => {
   res.json(toClimateTrendDto(trend))
 })
 
+const getClimateInsights = asyncHandler(async (req, res) => {
+  const { country } = toGetClimateDataRequestDto({
+    country: req.params.country
+  })
+
+  validateCountry(country)
+
+  const dataset = await repository.getByCountry(country)
+
+  if (!dataset || dataset.length === 0) {
+    throw new AppError("No data found for this country", 404)
+  }
+
+  const aiResponse = await aiService.getInsights(country, dataset)
+
+  res.json({
+    country,
+    insight: aiResponse.insight
+  })
+})
+
 module.exports = {
   getAllClimateData,
   getClimateDataByYear,
   getLatestClimateData,
-  getClimateTrend
+  getClimateTrend,
+  getClimateInsights
 }
