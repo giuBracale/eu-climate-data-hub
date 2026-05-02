@@ -1,25 +1,42 @@
-const fs = require("fs")
-const path = require("path")
+import fs from "fs"
+import path from "path"
+
+import { saveMany, getByCountry } from "../infrastructure/database/climateRepository"
 
 const RAW_DIR = path.join(__dirname, "../../data/raw")
-//const PROCESSED_DIR = path.join(__dirname, "../../data/processed")
 
-const repository = require("../infrastructure/database/climateRepository")
-
-function loadData(country, file) {
-  const filePath = path.join(RAW_DIR, country, file)
-  const raw = fs.readFileSync(filePath)
-  return JSON.parse(raw)[1]
+type RawItem = {
+  date: string
+  value: number | null
 }
 
-function mergeCountryData(country) {
+type ClimateRecord = {
+  country: string
+  year: string
+  gdp?: number | null
+  population?: number | null
+  co2?: number | null
+}
+
+function loadData(country: string, file: string): RawItem[] {
+  const filePath = path.join(RAW_DIR, country, file)
+  const raw = fs.readFileSync(filePath, "utf-8")
+
+  const parsed = JSON.parse(raw)
+
+  return parsed[1] as RawItem[]
+}
+
+function mergeCountryData(country: string): ClimateRecord[] {
   const gdpData = loadData(country, "gdp.json")
   const populationData = loadData(country, "population.json")
   const co2Data = loadData(country, "co2.json")
 
-  const dataset = {}
+  const dataset: Record<string, ClimateRecord> = {}
 
-  function insert(data, field) {
+  type ClimateNumericField = "gdp" | "population" | "co2"
+
+  function insert(data: RawItem[], field: ClimateNumericField) {
     data.forEach(item => {
       const year = item.date
 
@@ -36,11 +53,14 @@ function mergeCountryData(country) {
   insert(co2Data, "co2")
 
   return Object.values(dataset).filter(
-    d => d.gdp || d.population || d.co2
-  )
+  d =>
+    (d.gdp !== null && d.gdp !== undefined) ||
+    (d.population !== null && d.population !== undefined) ||
+    (d.co2 !== null && d.co2 !== undefined)
+)
 }
 
-async function runProcessing() {
+export async function runProcessing(): Promise<void> {
   console.log("\n Starting processing pipeline...\n")
 
   const countries = fs.readdirSync(RAW_DIR)
@@ -56,10 +76,10 @@ async function runProcessing() {
 
       const dataset = mergeCountryData(country)
 
-      await repository.saveMany(dataset)
+      await saveMany(dataset)
 
       console.log(`✔ Saved dataset to DB for ${country}\n`)
-    } catch (err) {
+    } catch (err: any) {
       console.error(`✖ Error processing ${country}:`, err.message)
     }
   }
@@ -67,18 +87,14 @@ async function runProcessing() {
   console.log(" Processing completed\n")
 }
 
-module.exports = {
-  runProcessing
-}
-
 //
-//  RUNNER
+// CLI runner
 //
 
 if (require.main === module) {
   runProcessing()
     .then(() => process.exit(0))
-    .catch(err => {
+    .catch((err: Error) => {
       console.error(err)
       process.exit(1)
     })

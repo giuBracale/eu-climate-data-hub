@@ -1,8 +1,8 @@
 const request = require("supertest")
 const express = require("express")
 
-const errorHandler = require("../../src/api/middleware/errorHandler")
-const AppError = require("../../src/domain/errors/AppError")
+const errorHandler = require("../../src/api/middleware/errorHandler").default
+const AppError = require("../../src/domain/errors/AppError").default
 
 const app = express()
 

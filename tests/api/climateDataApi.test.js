@@ -1,5 +1,5 @@
 const request = require("supertest")
-const app = require("../../src/app/app")
+const app = require("../../src/app/app").default
 
 describe("Climate Data API", () => {
 
@@ -38,8 +38,7 @@ describe("Climate Data API", () => {
 
   test("GET invalid year should return 404", async () => {
     const res = await request(app)
-      .get("/api/countries/ITA/climate-data/9999")
-
+      .get("/api/countries/ITA/climate-data/year/9999")
     expect(res.statusCode).toBe(404)
     expect(res.body).toHaveProperty("error")
   })

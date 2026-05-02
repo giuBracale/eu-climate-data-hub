@@ -1,18 +1,19 @@
-const express = require("express")
-const climateRoutes = require("../api/routes/climateDataRoutes")
+import express, { Request, Response } from "express"
+import climateRoutes from "../api/routes/climateDataRoutes"
+
+import swaggerUi from "swagger-ui-express"
+import swaggerSpec from "../docs/swagger"
+
+import errorHandler from "../api/middleware/errorHandler"
 
 const app = express()
-const swaggerUi = require("swagger-ui-express")
-const swaggerSpec = require("../docs/swagger")
-
-const errorHandler = require("../api/middleware/errorHandler")
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use(express.json())
 
 app.use("/api", climateRoutes)
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.json({
     message: "EU Climate Data API",
     endpoints: {
@@ -25,7 +26,6 @@ app.get("/", (req, res) => {
   })
 })
 
-
 app.use(errorHandler)
 
-module.exports = app
+export default app

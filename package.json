@@ -9,7 +9,16 @@
     "test": "jest"
   },
   "jest": {
-    "testEnvironment": "node"
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -25,7 +34,15 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.6.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "jest": "^30.3.0",
-    "supertest": "^7.2.2"
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   }
 }

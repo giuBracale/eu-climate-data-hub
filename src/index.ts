@@ -1,4 +1,4 @@
-const app = require("./app/app")
+import app from "./app/app"
 
 const PORT = 3000
 

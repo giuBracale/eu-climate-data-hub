@@ -1,6 +1,14 @@
-const prisma = require("./prismaClient")
+import prisma from "./prismaClient"
 
-async function saveMany(records) {
+type ClimateRecord = {
+  country: string
+  year: string | number
+  gdp?: number | null
+  population?: number | null
+  co2?: number | null
+}
+
+export async function saveMany(records: ClimateRecord[]): Promise<void> {
   if (!records.length) return
 
   await prisma.climateData.createMany({
@@ -15,14 +23,11 @@ async function saveMany(records) {
   })
 }
 
-async function getByCountry(country) {
+export async function getByCountry(
+  country: string
+): Promise<ClimateRecord[]> {
   return prisma.climateData.findMany({
     where: { country },
     orderBy: { year: "asc" }
   })
-}
-
-module.exports = {
-  saveMany,
-  getByCountry
 }
