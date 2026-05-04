@@ -7,6 +7,7 @@
     "process:data": "node scripts/processData.js",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "metrics": "ts-node -r tsconfig-paths/register scripts/jobs/updateAllMetrics.ts",
+    "ingest": "ts-node -r tsconfig-paths/register ./scripts/jobs/runWorldBankIngestion.ts",
     "build": "tsc",
     "start:prod": "node dist/index.js",
     "test": "jest"
@@ -14,8 +15,14 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "moduleFileExtensions": ["ts", "js", "json"],
-    "testMatch": ["**/tests/**/*.test.js"],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@api/(.*)$": "<rootDir>/src/api/$1",
@@ -31,7 +38,9 @@
       "^@db/(.*)$": "<rootDir>/src/infrastructure/database/$1",
       "^@utils/(.*)$": "<rootDir>/src/utils/$1",
       "^@processing/(.*)$": "<rootDir>/src/processing/$1",
-      "^@ai/(.*)$": "<rootDir>/src/infrastructure/ai/$1"
+      "^@ai/(.*)$": "<rootDir>/src/infrastructure/ai/$1",
+      "^@pipelines/(.*)$": "<rootDir>/src/pipelines/$1",
+      "^@config/(.*)$": "<rootDir>/src/config/$1"
     }
   },
   "keywords": [],
@@ -58,6 +67,7 @@
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   }
 }
