@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import { logger } from "@utils/logger"
 
 import { saveMany, getByCountry } from "../infrastructure/database/climateRepository"
 
@@ -53,39 +54,42 @@ function mergeCountryData(country: string): ClimateRecord[] {
   insert(co2Data, "co2")
 
   return Object.values(dataset).filter(
-  d =>
-    (d.gdp !== null && d.gdp !== undefined) ||
-    (d.population !== null && d.population !== undefined) ||
-    (d.co2 !== null && d.co2 !== undefined)
-)
+    d =>
+      (d.gdp !== null && d.gdp !== undefined) ||
+      (d.population !== null && d.population !== undefined) ||
+      (d.co2 !== null && d.co2 !== undefined)
+  )
 }
 
 export async function runProcessing(): Promise<void> {
-  console.log("\n Starting processing pipeline...\n")
+
+  logger.info("Starting processing pipeline")
 
   const countries = fs.readdirSync(RAW_DIR)
 
   if (!countries.length) {
-    console.error(" No raw data found. Run ingestion first.")
+    logger.error("No raw data found. Run ingestion first.")
     process.exit(1)
   }
 
   for (const country of countries) {
     try {
-      console.log(`→ Processing ${country}...`)
+      logger.info({ country }, "Processing country")
 
       const dataset = mergeCountryData(country)
 
       await saveMany(dataset)
 
-      console.log(`✔ Saved dataset to DB for ${country}\n`)
+      logger.info({ country }, "Dataset saved")
     } catch (err: any) {
-      console.error(`✖ Error processing ${country}:`, err.message)
+      logger.error({ err, country }, "Error processing country")
     }
   }
 
-  console.log(" Processing completed\n")
+  logger.info("Processing completed")
 }
+
+
 
 //
 // CLI runner
@@ -95,7 +99,7 @@ if (require.main === module) {
   runProcessing()
     .then(() => process.exit(0))
     .catch((err: Error) => {
-      console.error(err)
+      logger.error({ err }, "Processing pipeline error")
       process.exit(1)
     })
 }

@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import { logger } from "@utils/logger"
 
 import { indicators, IndicatorKey } from "../config/indicators"
 import { fetchIndicator } from "../infrastructure/worldbank/worldbankClient"
@@ -30,44 +31,49 @@ function saveRawData(
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
 }
 
+
 // pipeline ingestion
 export async function runWorldBankPipeline(
   country: string
 ): Promise<void> {
-  console.log(`\n Starting ingestion for ${country}...\n`)
+  logger.info({ country }, "Starting ingestion")
 
   for (const key of Object.keys(indicators) as IndicatorKey[]) {
     const indicator = indicators[key]
 
     try {
-      console.log(`→ Fetching ${key}...`)
+      logger.info({ country, indicator: key }, "Fetching indicator")
 
       const data = await fetchIndicator(country, indicator)
 
       saveRawData(country, `${key}.json`, data)
 
-      console.log(`✔ Saved ${key}`)
+      logger.info({ country, indicator: key }, "Indicator saved")
     } catch (err) {
-      console.error(`✖ Error fetching ${key}:`, (err as Error).message)
+      logger.error(
+        { err, country, indicator: key },
+        "Error fetching indicator"
+      )
     }
   }
 
-  console.log(`\n Ingestion completed for ${country}\n`)
+
+  logger.info({ country }, "Ingestion completed")
 }
 
-// CLI runner (ok anche in TS con commonjs)
+// CLI runner 
 if (require.main === module) {
   const country = process.argv[2]
 
   if (!country) {
-    console.error(" Please provide a country code (e.g. ITA)")
+    logger.error("Missing country code")
     process.exit(1)
   }
 
   runWorldBankPipeline(country)
     .then(() => process.exit(0))
     .catch((err: Error) => {
-      console.error(err)
+      logger.error({ err }, "Ingestion failed")
       process.exit(1)
     })
 }

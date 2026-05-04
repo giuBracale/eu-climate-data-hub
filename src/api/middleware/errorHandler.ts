@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import AppError from "@errors/AppError"
+import { logger } from "@utils/logger"
+
 
 export default function errorHandler(
   err: Error | AppError,
@@ -7,7 +9,7 @@ export default function errorHandler(
   res: Response,
   next: NextFunction
 ): Response {
-  console.error(err)
+  logger.error({ err }, "Unhandled error")
 
   if (err instanceof AppError && err.isOperational) {
     return res.status(err.statusCode).json({

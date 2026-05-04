@@ -1,16 +1,17 @@
 import { runWorldBankPipeline } from "@pipelines/worldbankIngestion.pipeline"
 import { countries } from "@config/countries"
+import { logger } from "@utils/logger"
 
 async function run() {
   for (const country of countries) {
-    console.log(` Fetching data for ${country}`)
+    logger.info({ country }, "Fetching data")
     await runWorldBankPipeline(country)
   }
 
-  console.log(" Pipeline completed")
+  logger.info("Pipeline completed")
 }
 
 run().catch(err => {
-  console.error("Pipeline failed:", err)
+  logger.error({ err }, "Pipeline failed")
   process.exit(1)
 })

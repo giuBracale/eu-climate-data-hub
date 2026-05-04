@@ -1,6 +1,7 @@
 import { getByCountry } from "../infrastructure/database/climateRepository"
 import { getMetrics, upsertMetrics } from "../infrastructure/database/metricsRepository"
 import { computeHash } from "../utils/hash"
+import { logger } from "@utils/logger"
 
 function computeGrowth(
   first: number | null | undefined,
@@ -14,7 +15,7 @@ export async function updateMetricsForCountry(country: string) {
   const dataset = await getByCountry(country)
 
   if (dataset.length === 0) {
-    console.warn(`No data for ${country}`)
+    logger.warn({ country }, "No data available")
     return
   }
 
@@ -28,7 +29,7 @@ export async function updateMetricsForCountry(country: string) {
   const existing = await getMetrics(country)
 
   if (existing?.dataset_hash === newHash) {
-    console.log(`↪ Skipping ${country}, no changes`)
+    logger.info({ country }, "Skipping country, no changes")
     return
   }
 
@@ -47,5 +48,5 @@ export async function updateMetricsForCountry(country: string) {
     last_year: last.year
   })
 
-  console.log(`Metrics updated for ${country}`)
+  logger.info({ country }, "Metrics updated")
 }

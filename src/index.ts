@@ -1,7 +1,8 @@
 import app from "./app/app"
+import { logger } from "@utils/logger"
 
 const PORT = 3000
 
 app.listen(PORT, () => {
-  console.log(`Climate Data API running on port ${PORT}`)
+  logger.info({ port: PORT }, "Climate Data API running")
 })

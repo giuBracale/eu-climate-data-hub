@@ -1,3 +1,4 @@
+import { logger } from "@utils/logger"
 
 type ClimateRecord = {
   year: string | number
@@ -42,7 +43,7 @@ export async function getInsights(
 
     return (await response.json()) as AIResponse
   } catch (error) {
-    console.error("AI Service call failed:", (error as Error).message)
+    logger.error({ err: error }, "AI service call failed")
     throw new Error("Failed to fetch AI insights")
   }
 }
