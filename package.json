@@ -6,7 +6,8 @@
     "fetch:worldbank": "node scripts/fetchWorldBank.js",
     "process:data": "node scripts/processData.js",
     "start": "node src/index.js",
-    "test": "jest"
+    "test": "jest",
+    "metrics": "ts-node scripts/jobs/updateAllMetrics.ts"
   },
   "jest": {
     "preset": "ts-jest",

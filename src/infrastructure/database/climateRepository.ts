@@ -1,4 +1,5 @@
-import prisma from "./prismaClient"
+import { prisma } from "./prismaClient"
+import { ClimateData } from "@prisma/client"
 
 type ClimateRecord = {
   country: string
@@ -25,7 +26,7 @@ export async function saveMany(records: ClimateRecord[]): Promise<void> {
 
 export async function getByCountry(
   country: string
-): Promise<ClimateRecord[]> {
+): Promise<ClimateData[]> {
   return prisma.climateData.findMany({
     where: { country },
     orderBy: { year: "asc" }
