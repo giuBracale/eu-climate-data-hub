@@ -1,25 +1,25 @@
 import { Request, Response } from "express"
 
-import * as repository from "../../infrastructure/database/climateRepository"
-import * as climateService from "../../domain/services/climateDataService"
+import * as repository from "@db/climateRepository"
+import * as climateService from "@services/climateDataService"
 
-import asyncHandler from "../middleware/asyncHandler"
-import AppError from "../../domain/errors/AppError"
+import asyncHandler from "@middleware/asyncHandler"
+import AppError from "@errors/AppError"
 
 import {
   toClimateDataDto,
   toClimateDataListDto
-} from "../dto/climateDataDto"
+} from "@dto/climateDataDto"
 
-import { toClimateTrendDto } from "../dto/climateTrendDto"
-import { toGetClimateDataRequestDto } from "../dto/getClimateDataRequestDto"
+import { toClimateTrendDto } from "@dto/climateTrendDto"
+import { toGetClimateDataRequestDto } from "@dto/getClimateDataRequestDto"
 
 import {
   validateCountry,
   validateYear
-} from "../validators/climateDataValidator"
+} from "@validators/climateDataValidator"
 
-import { getInsights } from "../../infrastructure/ai/aiService"
+import { getInsights } from "@ai/aiService"
 
 //
 // PARAM TYPES
@@ -32,6 +32,9 @@ type CountryYearParams = {
   country: string
   year: string
 }
+
+
+
 
 //
 // GET ALL

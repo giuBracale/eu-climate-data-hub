@@ -1,31 +1,19 @@
-import express from "express"
-import * as controller from "../controllers/climateDataController"
+import { Router } from "express"
 
-const router = express.Router()
+import {
+  getAllClimateData,
+  getClimateDataByYear,
+  getLatestClimateData,
+  getClimateTrend,
+  getClimateInsights
+} from "@controllers/climateDataController"
 
-router.get(
-  "/countries/:country/climate-data",
-  controller.getAllClimateData
-)
+const router = Router()
 
-router.get(
-  "/countries/:country/climate-data/latest",
-  controller.getLatestClimateData
-)
-
-router.get(
-  "/countries/:country/climate-data/trend",
-  controller.getClimateTrend
-)
-
-router.get(
-  "/countries/:country/climate-data/year/:year",
-  controller.getClimateDataByYear
-)
-
-router.get(
-  "/countries/:country/climate-data/insights",
-  controller.getClimateInsights
-)
+router.get("/countries/:country/climate-data", getAllClimateData)
+router.get("/countries/:country/climate-data/latest", getLatestClimateData)
+router.get("/countries/:country/climate-data/trend", getClimateTrend)
+router.get("/countries/:country/climate-data/year/:year", getClimateDataByYear)
+router.get("/countries/:country/insights", getClimateInsights)
 
 export default router

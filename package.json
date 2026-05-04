@@ -5,21 +5,34 @@
   "scripts": {
     "fetch:worldbank": "node scripts/fetchWorldBank.js",
     "process:data": "node scripts/processData.js",
-    "start": "node src/index.js",
-    "test": "jest",
-    "metrics": "ts-node scripts/jobs/updateAllMetrics.ts"
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "metrics": "ts-node -r tsconfig-paths/register scripts/jobs/updateAllMetrics.ts",
+    "build": "tsc",
+    "start:prod": "node dist/index.js",
+    "test": "jest"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ],
-    "testMatch": [
-      "**/tests/**/*.test.js"
-    ]
+    "moduleFileExtensions": ["ts", "js", "json"],
+    "testMatch": ["**/tests/**/*.test.js"],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^@api/(.*)$": "<rootDir>/src/api/$1",
+      "^@controllers/(.*)$": "<rootDir>/src/api/controllers/$1",
+      "^@routes/(.*)$": "<rootDir>/src/api/routes/$1",
+      "^@middleware/(.*)$": "<rootDir>/src/api/middleware/$1",
+      "^@validators/(.*)$": "<rootDir>/src/api/validators/$1",
+      "^@dto/(.*)$": "<rootDir>/src/api/dto/$1",
+      "^@domain/(.*)$": "<rootDir>/src/domain/$1",
+      "^@services/(.*)$": "<rootDir>/src/domain/services/$1",
+      "^@errors/(.*)$": "<rootDir>/src/domain/errors/$1",
+      "^@infra/(.*)$": "<rootDir>/src/infrastructure/$1",
+      "^@db/(.*)$": "<rootDir>/src/infrastructure/database/$1",
+      "^@utils/(.*)$": "<rootDir>/src/utils/$1",
+      "^@processing/(.*)$": "<rootDir>/src/processing/$1",
+      "^@ai/(.*)$": "<rootDir>/src/infrastructure/ai/$1"
+    }
   },
   "keywords": [],
   "author": "",
@@ -32,7 +45,8 @@
     "node-fetch": "^2.7.0",
     "prisma": "^5.22.0",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

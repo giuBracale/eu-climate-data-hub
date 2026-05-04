@@ -30,7 +30,41 @@
     // MIGRAZIONE GRADUALE
     "allowJs": true,
     "checkJs": false,
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "6.0",
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+
+      "@api/*": ["src/api/*"],
+      "@controllers/*": ["src/api/controllers/*"],
+      "@routes/*": ["src/api/routes/*"],
+      "@middleware/*": ["src/api/middleware/*"],
+      "@validators/*": ["src/api/validators/*"],
+      "@dto/*": ["src/api/dto/*"],
+
+      "@app/*": ["src/app/*"],
+      "@config/*": ["src/config/*"],
+      "@docs/*": ["src/docs/*"],
+
+      "@domain/*": ["src/domain/*"],
+      "@services/*": ["src/domain/services/*"],
+      "@errors/*": ["src/domain/errors/*"],
+
+      "@generated/*": ["src/generated/*"],
+
+      "@infra/*": ["src/infrastructure/*"],
+      "@db/*": ["src/infrastructure/database/*"],
+      "@ai/*": ["src/infrastructure/ai/*"],
+      "@worldbank/*": ["src/infrastructure/worldbank/*"],
+
+      "@pipelines/*": ["src/pipelines/*"],
+      "@processing/*": ["src/processing/*"],
+
+      "@storage/*": ["src/storage/*"],
+
+      "@utils/*": ["src/utils/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

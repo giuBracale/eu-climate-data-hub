@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import AppError from "../../domain/errors/AppError"
+import AppError from "@errors/AppError"
 
 export default function errorHandler(
   err: Error | AppError,

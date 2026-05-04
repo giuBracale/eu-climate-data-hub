@@ -1,4 +1,4 @@
-import AppError from "../../domain/errors/AppError"
+import AppError from "@errors/AppError"
 
 export function validateCountry(country: string): void {
   if (!country || country.length !== 3) {
@@ -7,7 +7,11 @@ export function validateCountry(country: string): void {
 }
 
 export function validateYear(year?: string): void {
-  if (year !== undefined && isNaN(Number(year))) {
-    throw new AppError("Invalid year format", 400)
+  if (!year) return
+
+  const parsed = Number(year)
+
+  if (isNaN(parsed)) {
+    throw new AppError("Invalid year", 400)
   }
 }
