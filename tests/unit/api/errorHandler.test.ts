@@ -1,23 +1,22 @@
-const request = require("supertest")
-const express = require("express")
+import request from "supertest"
+import express from "express"
 
-const errorHandler = require("../../src/api/middleware/errorHandler").default
-const AppError = require("../../src/domain/errors/AppError").default
+import errorHandler from "@middleware/errorHandler"
+import AppError from "@errors/AppError"
 
 const app = express()
 
-app.get("/error", (req, res, next) => {
+app.get("/error", (_req, _res, next) => {
   next(new AppError("Test error", 400))
 })
 
-app.get("/crash", (req, res, next) => {
+app.get("/crash", (_req, _res, next) => {
   next(new Error("Unexpected"))
 })
 
 app.use(errorHandler)
 
 describe("Error Handler", () => {
-
   it("should handle AppError correctly", async () => {
     const res = await request(app).get("/error")
 
@@ -37,5 +36,4 @@ describe("Error Handler", () => {
 
     expect(res.body).toHaveProperty("error")
   })
-
 })
