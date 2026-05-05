@@ -6,7 +6,7 @@ import {
   getLatestClimateData,
   getClimateTrend,
   getClimateInsights
-} from "@controllers/climateDataController"
+} from "@/modules/climate/api/climate.controller"
 
 const router = Router()
 

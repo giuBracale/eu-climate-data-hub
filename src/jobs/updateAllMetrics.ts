@@ -1,7 +1,7 @@
-import { updateMetricsForCountry } from "../../src/processing/updateMetrics"
+import { updateMetricsForCountry } from "../modules/climate/application/use-cases/updateMetrics.usecase"
 import fs from "fs"
 import path from "path"
-import { logger } from "@utils/logger"
+import { logger } from "@/modules/shared/utils/logger"
 
 const RAW_DIR = path.join(__dirname, "../../data/raw")
 

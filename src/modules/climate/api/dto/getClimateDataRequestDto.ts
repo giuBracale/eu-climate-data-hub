@@ -1,4 +1,4 @@
-import AppError from "@domain/errors/AppError"
+import AppError from "@/modules/shared/errors/AppError"
 export interface GetClimateDataRequestDto {
   country: string
   year?: number

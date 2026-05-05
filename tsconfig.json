@@ -36,12 +36,12 @@
     "paths": {
       "@/*": ["src/*"],
 
-      "@api/*": ["src/api/*"],
-      "@controllers/*": ["src/api/controllers/*"],
-      "@routes/*": ["src/api/routes/*"],
-      "@middleware/*": ["src/api/middleware/*"],
-      "@validators/*": ["src/api/validators/*"],
-      "@dto/*": ["src/api/dto/*"],
+      "@api/*": ["src/modules/climate/api/*"],
+      "@controllers/*": ["src/modules/climate/api/controllers/*"],
+      "@routes/*": ["src/modules/climate/api/routes/*"],
+      "@middleware/*": ["src/modules/shared/middleware/*"],
+      "@validators/*": ["src/modules/climate/api/validators/*"],
+      "@dto/*": ["src/modules/climate/api/dto/*"],
 
       "@app/*": ["src/app/*"],
       "@config/*": ["src/config/*"],
@@ -49,21 +49,21 @@
 
       "@domain/*": ["src/domain/*"],
       "@services/*": ["src/domain/services/*"],
-      "@errors/*": ["src/domain/errors/*"],
+      "@errors/*": ["src/modules/shared/errors/*"],
 
       "@generated/*": ["src/generated/*"],
 
-      "@infra/*": ["src/infrastructure/*"],
-      "@db/*": ["src/infrastructure/database/*"],
-      "@ai/*": ["src/infrastructure/ai/*"],
-      "@worldbank/*": ["src/infrastructure/worldbank/*"],
+      "@infra/*": ["src/modules/infrastructure/*"],
+      "@db/*": ["src/modules/infrastructure/database/*"],
+      "@ai/*": ["src/modules/infrastructure/ai/*"],
+      "@worldbank/*": ["src/modules/infrastructure/worldbank/*"],
 
-      "@pipelines/*": ["src/pipelines/*"],
-      "@processing/*": ["src/processing/*"],
+      "@pipelines/*": ["src/modules/climate/pipelines/*"],
+      "@processing/*": ["src/modules/climate/processing/*"],
 
       "@storage/*": ["src/storage/*"],
 
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/modules/shared/utils/*"]
     }
   },
   "include": ["src", "scripts", "tests"],

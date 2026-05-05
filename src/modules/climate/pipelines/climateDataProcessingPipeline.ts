@@ -1,8 +1,8 @@
 import fs from "fs"
 import path from "path"
-import { logger } from "@utils/logger"
+import { logger } from "@/modules/shared/utils/logger"
 
-import { saveMany, getByCountry } from "../infrastructure/database/climateRepository"
+import { saveMany, getByCountry } from "../../infrastructure/database/climateRepository"
 
 const RAW_DIR = path.join(__dirname, "../../data/raw")
 

@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express"
-import climateRoutes from "../api/routes/climateDataRoutes"
+import climateRoutes from "../modules/climate/api/climate.routes"
 
 import swaggerUi from "swagger-ui-express"
 import swaggerSpec from "../docs/swagger"
 
-import errorHandler from "../api/middleware/errorHandler"
+import errorHandler from "../modules/shared/middleware/errorHandler"
 
 const app = express()
 

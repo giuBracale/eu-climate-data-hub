@@ -1,5 +1,5 @@
 import request from "supertest"
-import app from "@app/app"
+import app from "@/app/app"
 
 describe("Validation", () => {
   it("should fail with invalid country", async () => {

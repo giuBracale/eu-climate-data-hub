@@ -1,5 +1,5 @@
-import * as service from "@services/climateDataService"
-import { ClimateRecord } from "@domain/types"
+import * as service from "@/modules/climate/application/climateDataService"
+import { ClimateRecord } from "@/types/types"
 
 describe("Climate Data Service", () => {
   const dataset: ClimateRecord[] = [

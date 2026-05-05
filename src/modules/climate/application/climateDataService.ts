@@ -1,4 +1,4 @@
-import { ClimateRecord } from "@domain/types"
+import { ClimateRecord } from "@/types/types"
 
 function sortByYearAsc(data: ClimateRecord[]): ClimateRecord[] {
   return [...data].sort((a, b) => a.year - b.year)

@@ -1,4 +1,4 @@
-import { logger } from "@utils/logger"
+import { logger } from "@/modules/shared/utils/logger"
 
 type ClimateRecord = {
   year: string | number

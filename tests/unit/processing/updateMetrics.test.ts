@@ -1,8 +1,8 @@
-import { updateMetricsForCountry } from "@processing/updateMetrics"
+import { updateMetricsForCountry } from "@/modules/climate/application/use-cases/updateMetrics.usecase"
 
-import * as climateRepo from "@db/climateRepository"
-import * as metricsRepo from "@db/metricsRepository"
-import * as hashUtils from "@utils/hash"
+import * as climateRepo from "@/modules/infrastructure/database/climateRepository"
+import * as metricsRepo from "@/modules/infrastructure/database/metricsRepository"
+import * as hashUtils from "@/modules/shared/utils/hash"
 
 jest.mock("@db/climateRepository")
 jest.mock("@db/metricsRepository")

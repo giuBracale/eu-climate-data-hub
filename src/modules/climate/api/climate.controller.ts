@@ -1,25 +1,25 @@
 import { Request, Response } from "express"
 
-import * as repository from "@db/climateRepository"
-import * as climateService from "@services/climateDataService"
+import * as repository from "@/modules/infrastructure/database/climateRepository"
+import * as climateService from "@/modules/climate/application/climateDataService"
 
-import asyncHandler from "@middleware/asyncHandler"
-import AppError from "@errors/AppError"
+import asyncHandler from "@/modules/shared/middleware/asyncHandler"
+import AppError from "@/modules/shared/errors/AppError"
 
 import {
   toClimateDataDto,
   toClimateDataListDto
-} from "@dto/climateDataDto"
+} from "@/modules/climate/api/dto/climateDataDto"
 
-import { toClimateTrendDto } from "@dto/climateTrendDto"
-import { toGetClimateDataRequestDto } from "@dto/getClimateDataRequestDto"
+import { toClimateTrendDto } from "@/modules/climate/api/dto/climateTrendDto"
+import { toGetClimateDataRequestDto } from "@/modules/climate/api/dto/getClimateDataRequestDto"
 
 import {
   validateCountry,
   validateYear
-} from "@validators/climateDataValidator"
+} from "@/modules/climate/api/climate.validator"
 
-import { getInsights } from "@ai/aiService"
+import { getInsights } from "@/modules/infrastructure/ai/aiService"
 
 //
 // PARAM TYPES

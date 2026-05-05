@@ -1,6 +1,6 @@
-import { runWorldBankPipeline } from "@pipelines/worldbankIngestion.pipeline"
-import { countries } from "@config/countries"
-import { logger } from "@utils/logger"
+import { runWorldBankPipeline } from "@/modules/worldbank/worldbankIngestion.pipeline"
+import { countries } from "@/config/countries"
+import { logger } from "@/modules/shared/utils/logger"
 
 async function run() {
   for (const country of countries) {

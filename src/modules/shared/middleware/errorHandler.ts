@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
-import AppError from "@errors/AppError"
-import { logger } from "@utils/logger"
+import AppError from "@/modules/shared/errors/AppError"
+import { logger } from "@/modules/shared/utils/logger"
 
 
 export default function errorHandler(

@@ -1,8 +1,8 @@
 import fs from "fs"
 import path from "path"
-import { logger } from "@utils/logger"
+import { logger } from "@/modules/shared/utils/logger"
 
-import { indicators, IndicatorKey } from "../config/indicators"
+import { indicators, IndicatorKey } from "../../config/indicators"
 import { fetchIndicator } from "../infrastructure/worldbank/worldbankClient"
 
 // directory raw data
