@@ -21,11 +21,12 @@
       "json"
     ],
     "testMatch": [
-      "**/tests/**/*.test.js"
+      "**/tests/**/*.test.ts"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
       "^@api/(.*)$": "<rootDir>/src/api/$1",
+      "^@app/(.*)$": "<rootDir>/src/app/$1",
       "^@controllers/(.*)$": "<rootDir>/src/api/controllers/$1",
       "^@routes/(.*)$": "<rootDir>/src/api/routes/$1",
       "^@middleware/(.*)$": "<rootDir>/src/api/middleware/$1",

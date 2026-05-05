@@ -70,13 +70,17 @@ export const getClimateDataByYear = asyncHandler<CountryYearParams>(
     validateCountry(country)
     validateYear(year)
 
+    if (year === undefined) {
+      throw new AppError("Year is required", 400)
+    }
+
     const dataset = await repository.getByCountry(country)
 
     if (!dataset.length) {
       throw new AppError("No data found for this country", 404)
     }
 
-    const record = climateService.getByYear(dataset, year!)
+    const record = climateService.getByYear(dataset, year)
 
     if (!record) {
       throw new AppError("Data not found for this year", 404)

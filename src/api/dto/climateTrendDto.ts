@@ -1,15 +1,15 @@
 export type RawTrend = {
   period: string
-  gdp_growth: number
-  population_growth: number
-  co2_change: number
+  gdp_growth: number | null
+  population_growth: number | null
+  co2_change: number | null
 }
 
 export interface ClimateTrendDto {
   period: string
-  gdpGrowth: number
-  populationGrowth: number
-  co2Change: number
+  gdpGrowth: number | null
+  populationGrowth: number | null
+  co2Change: number | null
 }
 
 export function toClimateTrendDto(
@@ -19,8 +19,8 @@ export function toClimateTrendDto(
 
   return {
     period: trend.period,
-    gdpGrowth: trend.gdp_growth,
-    populationGrowth: trend.population_growth,
-    co2Change: trend.co2_change
+    gdpGrowth: trend.gdp_growth ?? null,
+    populationGrowth: trend.population_growth ?? null,
+    co2Change: trend.co2_change ?? null
   }
 }

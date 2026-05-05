@@ -6,12 +6,10 @@ export function validateCountry(country: string): void {
   }
 }
 
-export function validateYear(year?: string): void {
-  if (!year) return
+export function validateYear(year?: number): void {
+  if (year === undefined) return
 
-  const parsed = Number(year)
-
-  if (isNaN(parsed)) {
+  if (!Number.isInteger(year)) {
     throw new AppError("Invalid year", 400)
   }
 }

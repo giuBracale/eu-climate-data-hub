@@ -1,82 +1,54 @@
-type ClimateRecord = {
-  country: string
-  year: string | number
-  gdp?: number | null
-  population?: number | null
-  co2?: number | null
+import { ClimateRecord } from "@domain/types"
+
+function sortByYearAsc(data: ClimateRecord[]): ClimateRecord[] {
+  return [...data].sort((a, b) => a.year - b.year)
 }
 
-type ClimateTrend = {
-  period: string
-  gdp_growth: number
-  population_growth: number
-  co2_change: number
+function sortByYearDesc(data: ClimateRecord[]): ClimateRecord[] {
+  return [...data].sort((a, b) => b.year - a.year)
 }
 
-// 🔥 FIX: non usare truthy check
-function filterValidData(dataset: ClimateRecord[]): ClimateRecord[] {
-  return dataset.filter(
+function filterValidData(data: ClimateRecord[]): ClimateRecord[] {
+  return data.filter(
     d =>
-      d.gdp !== null &&
-      d.gdp !== undefined &&
-      d.population !== null &&
-      d.population !== undefined &&
-      d.co2 !== null &&
-      d.co2 !== undefined
+      d.gdp !== null && d.gdp !== undefined ||
+      d.population !== null && d.population !== undefined ||
+      d.co2 !== null && d.co2 !== undefined
   )
 }
 
-function sortByYearAsc(dataset: ClimateRecord[]): ClimateRecord[] {
-  return [...dataset].sort(
-    (a, b) => Number(a.year) - Number(b.year)
-  )
-}
-
-function sortByYearDesc(dataset: ClimateRecord[]): ClimateRecord[] {
-  return [...dataset].sort(
-    (a, b) => Number(b.year) - Number(a.year)
-  )
+export function getLatest(dataset: ClimateRecord[]): ClimateRecord | undefined {
+  const valid = filterValidData(dataset)
+  if (!valid.length) return undefined
+  return sortByYearDesc(valid)[0]
 }
 
 export function getByYear(
   dataset: ClimateRecord[],
-  year: string
+  year: number
 ): ClimateRecord | undefined {
-  return dataset.find(
-    record => String(record.year) === String(year)
-  )
+  return dataset.find(record => record.year === year)
 }
 
-export function getLatest(
-  dataset: ClimateRecord[]
-): ClimateRecord | undefined {
-  const valid = filterValidData(dataset)
-  const sorted = sortByYearDesc(valid)
-  return sorted[0]
-}
+export function getTrend(dataset: ClimateRecord[]) {
+  const valid = sortByYearAsc(filterValidData(dataset))
+  if (valid.length < 2) return null
 
-export function getTrend(
-  dataset: ClimateRecord[]
-): ClimateTrend | null {
-  const valid = filterValidData(dataset)
-  const sorted = sortByYearAsc(valid)
+  const first = valid[0]!
+  const last = valid[valid.length - 1]!
 
-  if (sorted.length === 0) {
-    return null
-  }
-
-  const first = sorted[0]
-  const last = sorted[sorted.length - 1]
-
-  if (!first || !last) {
-    return null
+  const computeGrowth = (
+    firstVal?: number | null,
+    lastVal?: number | null
+  ): number | null => {
+    if (firstVal == null || lastVal == null || firstVal === 0) return null
+    return ((lastVal - firstVal) / firstVal) * 100
   }
 
   return {
     period: `${first.year}-${last.year}`,
-    gdp_growth: (last.gdp ?? 0) - (first.gdp ?? 0),
-    population_growth:
-      (last.population ?? 0) - (first.population ?? 0),
-    co2_change: (last.co2 ?? 0) - (first.co2 ?? 0)
+    gdp_growth: computeGrowth(first.gdp, last.gdp),
+    population_growth: computeGrowth(first.population, last.population),
+    co2_change: computeGrowth(first.co2, last.co2)
   }
 }

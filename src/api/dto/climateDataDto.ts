@@ -8,7 +8,7 @@ export type RawClimateRecord = {
 
 export interface ClimateDataDto {
   country: string
-  year: string | number
+  year: number
   gdp: number | null
   population: number | null
   co2: number | null
@@ -17,7 +17,7 @@ export interface ClimateDataDto {
 export function toClimateDataDto(record: RawClimateRecord): ClimateDataDto {
   return {
     country: record.country,
-    year: record.year,
+    year: Number(record.year),
     gdp: record.gdp ?? null,
     population: record.population ?? null,
     co2: record.co2 ?? null

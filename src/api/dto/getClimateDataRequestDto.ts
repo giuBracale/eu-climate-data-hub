@@ -1,6 +1,7 @@
+import AppError from "@domain/errors/AppError"
 export interface GetClimateDataRequestDto {
   country: string
-  year?: string
+  year?: number
 }
 
 export type RawParams = {
@@ -11,8 +12,22 @@ export type RawParams = {
 export function toGetClimateDataRequestDto(
   params: RawParams
 ): GetClimateDataRequestDto {
+  const year = params.year ? Number(params.year) : undefined
+
+
+  if (params.year && Number.isNaN(year)) {
+    throw new AppError("Invalid year", 400)
+  }
+
+  const country = (params.country ?? "").toUpperCase()
+
+  if (!country) {
+    throw new Error("Country is required")
+  }
+
   return {
-    country: (params.country ?? "").toUpperCase(),
-    ...(params.year !== undefined && { year: params.year })
+    country,
+    ...(year !== undefined && { year })
   }
 }
+

@@ -3,7 +3,7 @@ import { getMetrics, upsertMetrics } from "../infrastructure/database/metricsRep
 import { computeHash } from "../utils/hash"
 import { logger } from "@utils/logger"
 
-function computeGrowth(
+export function computeGrowth(
   first: number | null | undefined,
   last: number | null | undefined
 ): number | null {
