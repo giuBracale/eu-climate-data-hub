@@ -23,7 +23,7 @@ src/generated/prisma/
 data/
 
 # private files
-Pitch
+doc/
 
 # IDE
 .vscode/

@@ -10,7 +10,7 @@
     "ingest": "ts-node -r tsconfig-paths/register ./scripts/jobs/runWorldBankIngestion.ts",
     "build": "tsc",
     "start:prod": "node dist/index.js",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "jest": {
     "preset": "ts-jest",
@@ -41,6 +41,11 @@
       "^@ai/(.*)$": "<rootDir>/src/infrastructure/ai/$1",
       "^@pipelines/(.*)$": "<rootDir>/src/pipelines/$1",
       "^@config/(.*)$": "<rootDir>/src/config/$1"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.test.json"
+      }
     }
   },
   "keywords": [],
@@ -63,6 +68,7 @@
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
+    "@types/supertest": "^7.2.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "jest": "^30.3.0",
