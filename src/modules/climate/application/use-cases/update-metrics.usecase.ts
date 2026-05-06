@@ -1,5 +1,5 @@
-import { getByCountry } from "../../../infrastructure/database/climateRepository"
-import { getMetrics, upsertMetrics } from "../../../infrastructure/database/metricsRepository"
+import { getByCountry } from "../../../infrastructure/database/climate.repository"
+import { getMetrics, upsertMetrics } from "../../../infrastructure/database/metrics.repository"
 import { computeHash } from "../../../shared/utils/hash"
 import { logger } from "@/modules/shared/utils/logger"
 

@@ -1,4 +1,4 @@
-import { updateMetricsForCountry } from "../modules/climate/application/use-cases/updateMetrics.usecase"
+import { updateMetricsForCountry } from "../modules/climate/application/use-cases/update-metrics.usecase"
 import fs from "fs"
 import path from "path"
 import { logger } from "@/modules/shared/utils/logger"

@@ -1,4 +1,4 @@
-import { prisma } from "./prismaClient"
+import { prisma } from "./prisma.client"
 
 export async function getMetrics(country: string) {
   return prisma.climateMetrics.findUnique({

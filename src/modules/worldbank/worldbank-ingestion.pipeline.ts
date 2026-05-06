@@ -3,7 +3,7 @@ import path from "path"
 import { logger } from "@/modules/shared/utils/logger"
 
 import { indicators, IndicatorKey } from "../../config/indicators"
-import { fetchIndicator } from "../infrastructure/worldbank/worldbankClient"
+import { fetchIndicator } from "../infrastructure/worldbank/worldbank.client"
 
 // directory raw data
 const RAW_DIR = path.join(__dirname, "../../data/raw")

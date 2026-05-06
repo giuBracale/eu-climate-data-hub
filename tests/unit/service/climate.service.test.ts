@@ -1,4 +1,4 @@
-import * as service from "@/modules/climate/application/climateDataService"
+import * as service from "@/modules/climate/application/climate.service"
 import { ClimateRecord } from "@/types/types"
 
 describe("Climate Data Service", () => {

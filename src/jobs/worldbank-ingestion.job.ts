@@ -1,4 +1,4 @@
-import { runWorldBankPipeline } from "@/modules/worldbank/worldbankIngestion.pipeline"
+import { runWorldBankPipeline } from "@/modules/worldbank/worldbank-ingestion.pipeline"
 import { countries } from "@/config/countries"
 import { logger } from "@/modules/shared/utils/logger"
 

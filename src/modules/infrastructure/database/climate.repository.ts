@@ -1,4 +1,4 @@
-import { prisma } from "./prismaClient"
+import { prisma } from "./prisma.client"
 import { ClimateData } from "@prisma/client"
 
 type ClimateRecord = {

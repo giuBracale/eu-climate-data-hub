@@ -1,23 +1,23 @@
-import * as repository from "@/modules/infrastructure/database/climateRepository"
-import * as climateService from "@/modules/climate/application/climateDataService"
+import * as repository from "@/modules/infrastructure/database/climate.repository"
+import * as climateService from "@/modules/climate/application/climate.service"
 
-import asyncHandler from "@/modules/shared/middleware/asyncHandler"
-import AppError from "@/modules/shared/errors/AppError"
+import asyncHandler from "@/modules/shared/middleware/async.handler"
+import AppError from "@/modules/shared/errors/app.error"
 
 import {
   toClimateDataDto,
   toClimateDataListDto
-} from "@/modules/climate/api/dto/climateDataResponse.dto"
+} from "@/modules/climate/api/dto/climate-data-response.dto"
 
-import { toClimateTrendDto } from "@/modules/climate/api/dto/climateTrendResponse.dto"
-import { toGetClimateDataRequestDto } from "@/modules/climate/api/dto/getClimateDataRequest.dto"
+import { toClimateTrendDto } from "@/modules/climate/api/dto/climate-trend-response.dto"
+import { toGetClimateDataRequestDto } from "@/modules/climate/api/dto/get-climate-data-request.dto"
 
 import {
   validateCountry,
   validateYear
 } from "@/modules/climate/api/climate.validator"
 
-import { getInsights } from "@/modules/infrastructure/ai/aiService"
+import { getInsights } from "@/modules/infrastructure/ai/ai-service"
 
 //
 // PARAM TYPES

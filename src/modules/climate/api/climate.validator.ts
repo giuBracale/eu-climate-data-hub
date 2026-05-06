@@ -1,4 +1,4 @@
-import AppError from "@/modules/shared/errors/AppError"
+import AppError from "@/modules/shared/errors/app.error"
 
 export function validateCountry(country: string): void {
   if (!country || country.length !== 3) {

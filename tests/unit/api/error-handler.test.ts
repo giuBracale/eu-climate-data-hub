@@ -1,8 +1,8 @@
 import request from "supertest"
 import express from "express"
 
-import errorHandler from "@/modules/shared/middleware/errorHandler"
-import AppError from "@/modules/shared/errors/AppError"
+import errorHandler from "@/modules/shared/middleware/error.handler"
+import AppError from "@/modules/shared/errors/app.error"
 
 const app = express()
 

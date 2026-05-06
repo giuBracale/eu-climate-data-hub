@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import AppError from "@/modules/shared/errors/AppError"
+import AppError from "@/modules/shared/errors/app.error"
 import { logger } from "@/modules/shared/utils/logger"
 
 
