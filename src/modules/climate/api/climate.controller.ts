@@ -1,5 +1,3 @@
-import { Request, Response } from "express"
-
 import * as repository from "@/modules/infrastructure/database/climateRepository"
 import * as climateService from "@/modules/climate/application/climateDataService"
 
@@ -9,10 +7,10 @@ import AppError from "@/modules/shared/errors/AppError"
 import {
   toClimateDataDto,
   toClimateDataListDto
-} from "@/modules/climate/api/dto/climateDataDto"
+} from "@/modules/climate/api/dto/climateDataResponse.dto"
 
-import { toClimateTrendDto } from "@/modules/climate/api/dto/climateTrendDto"
-import { toGetClimateDataRequestDto } from "@/modules/climate/api/dto/getClimateDataRequestDto"
+import { toClimateTrendDto } from "@/modules/climate/api/dto/climateTrendResponse.dto"
+import { toGetClimateDataRequestDto } from "@/modules/climate/api/dto/getClimateDataRequest.dto"
 
 import {
   validateCountry,
