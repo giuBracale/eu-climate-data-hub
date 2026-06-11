@@ -24,6 +24,7 @@ data/
 
 # private files
 doc/
+docs/
 
 # IDE
 .vscode/
