@@ -1,4 +1,3 @@
-import * as repository from "@/modules/infrastructure/database/climate.repository"
 import * as climateService from "@/modules/climate/application/climate.service"
 
 import asyncHandler from "@/modules/shared/middleware/async.handler"
@@ -45,7 +44,7 @@ export const getAllClimateData = asyncHandler<CountryParams>(
 
     validateCountry(country)
 
-    const dataset = await repository.getByCountry(country)
+    const dataset = await climateService.getForCountry(country)
 
     if (!dataset.length) {
       throw new AppError("No data found for this country", 404)
@@ -72,7 +71,7 @@ export const getClimateDataByYear = asyncHandler<CountryYearParams>(
       throw new AppError("Year is required", 400)
     }
 
-    const dataset = await repository.getByCountry(country)
+    const dataset = await climateService.getForCountry(country)
 
     if (!dataset.length) {
       throw new AppError("No data found for this country", 404)
@@ -99,7 +98,7 @@ export const getLatestClimateData = asyncHandler<CountryParams>(
 
     validateCountry(country)
 
-    const dataset = await repository.getByCountry(country)
+    const dataset = await climateService.getForCountry(country)
 
     if (!dataset.length) {
       throw new AppError("No data available", 404)
@@ -126,7 +125,7 @@ export const getClimateTrend = asyncHandler<CountryParams>(
 
     validateCountry(country)
 
-    const dataset = await repository.getByCountry(country)
+    const dataset = await climateService.getForCountry(country)
 
     if (!dataset.length) {
       throw new AppError("No data found for this country", 404)
@@ -149,7 +148,7 @@ export const getClimateInsights = asyncHandler<CountryParams>(
 
     validateCountry(country)
 
-    const dataset = await repository.getByCountry(country)
+    const dataset = await climateService.getForCountry(country)
 
     if (!dataset.length) {
       throw new AppError("No data found for this country", 404)

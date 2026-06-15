@@ -35,22 +35,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-
-      "@app/*": ["src/app/*"],
-      "@config/*": ["src/config/*"],
-      "@docs/*": ["src/docs/*"],
-
-      "@errors/*": ["src/modules/shared/errors/*"],
-      "@middleware/*": ["src/modules/shared/middleware/*"],
-      "@utils/*": ["src/modules/shared/utils/*"],
-
-      "@db/*": ["src/modules/infrastructure/database/*"],
-      "@ai/*": ["src/modules/infrastructure/ai/*"],
-      "@worldbank/*": ["src/modules/infrastructure/worldbank/*"],
-
-      "@pipelines/*": ["src/modules/climate/pipelines/*"],
-
-      "@generated/*": ["src/generated/*"]
+      "@db/*": ["src/modules/infrastructure/database/*"]
     }
   },
   "include": ["src", "scripts", "tests"],

@@ -8,8 +8,8 @@
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "metrics": "ts-node -r tsconfig-paths/register scripts/jobs/updateAllMetrics.ts",
     "ingest": "ts-node -r tsconfig-paths/register ./scripts/jobs/runWorldBankIngestion.ts",
-    "build": "tsc",
-    "start:prod": "node dist/index.js",
+    "build": "tsc && tsc-alias",
+    "start:prod": "node dist/src/index.js",
     "test": "NODE_ENV=test jest"
   },
   "jest": {
@@ -25,14 +25,7 @@
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
-      "^@app/(.*)$": "<rootDir>/src/app/$1",
-      "^@config/(.*)$": "<rootDir>/src/config/$1",
-      "^@errors/(.*)$": "<rootDir>/src/modules/shared/errors/$1",
-      "^@middleware/(.*)$": "<rootDir>/src/modules/shared/middleware/$1",
-      "^@utils/(.*)$": "<rootDir>/src/modules/shared/utils/$1",
-      "^@db/(.*)$": "<rootDir>/src/modules/infrastructure/database/$1",
-      "^@ai/(.*)$": "<rootDir>/src/modules/infrastructure/ai/$1",
-      "^@pipelines/(.*)$": "<rootDir>/src/modules/climate/pipelines/$1"
+      "^@db/(.*)$": "<rootDir>/src/modules/infrastructure/database/$1"
     },
     "globals": {
       "ts-jest": {
@@ -71,6 +64,7 @@
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.17",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   }

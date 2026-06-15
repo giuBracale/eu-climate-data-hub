@@ -1,7 +1,9 @@
 import AppError from "@/modules/shared/errors/app.error"
+import { countries } from "@/config/countries"
 
 export function validateCountry(country: string): void {
-  if (!country || country.length !== 3) {
+  const upper = country.toUpperCase()
+  if (!(countries as readonly string[]).includes(upper)) {
     throw new AppError("Invalid country code", 400)
   }
 }

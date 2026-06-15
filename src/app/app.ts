@@ -18,11 +18,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use("/api", climateRoutes)
 
 app.get("/health", async (_req: Request, res: Response) => {
+  const timestamp = new Date().toISOString()
   try {
     await prisma.$queryRaw`SELECT 1`
-    res.json({ status: "ok", database: "connected" })
+    res.json({ status: "ok", database: "connected", timestamp })
   } catch {
-    res.status(503).json({ status: "degraded", database: "unreachable" })
+    res.status(503).json({ status: "degraded", database: "unreachable", timestamp })
   }
 })
 

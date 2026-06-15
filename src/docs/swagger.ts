@@ -10,11 +10,11 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: "http://localhost:3000/api"
+        url: process.env.SWAGGER_SERVER_URL ?? "http://localhost:3000/api"
       }
     ]
   },
-  apis: ["./src/api/routes/*.ts"]
+  apis: ["./src/modules/climate/api/climate.routes.ts"]
 }
 
 const swaggerSpec = swaggerJsdoc(options)

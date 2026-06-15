@@ -1,4 +1,10 @@
+import type { ClimateData } from "@prisma/client"
 import { ClimateRecord } from "@/types/types"
+import * as repository from "@/modules/infrastructure/database/climate.repository"
+
+export async function getForCountry(country: string): Promise<ClimateData[]> {
+  return repository.getByCountry(country)
+}
 
 function sortByYearAsc(data: ClimateRecord[]): ClimateRecord[] {
   return [...data].sort((a, b) => a.year - b.year)
