@@ -3,31 +3,58 @@ services:
     image: postgres:15
     container_name: climate-db
     restart: always
+
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: climate
+
     ports:
       - "5433:5432"
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   ai-processor:
     build: ./ai-processor
     container_name: climate-ai
+    restart: always
     ports:
       - "8000:8000"
-    env_file:
-      - ./ai-processor/.env
+
   app:
     build: .
     container_name: climate-api
+
     depends_on:
-      - postgres
-      - ai-processor
+      postgres:
+        condition: service_healthy
+      ai-processor:
+        condition: service_started
+
     ports:
       - "3001:3000"
+
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/climate
-    command: sh -c "npx prisma migrate deploy && node src/index.js"
+      NODE_ENV: production
+      AI_SERVICE_URL: http://ai-processor:8000
+      SWAGGER_SERVER_URL: http://localhost:3001/api
+
+    command: sh scripts/start.sh
+
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
 volumes:
   postgres_data:

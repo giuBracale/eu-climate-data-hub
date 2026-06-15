@@ -1,26 +1,23 @@
-# Use Node.js LTS
-FROM node:20
+FROM node:20-bookworm
 
-# Create app directory
 WORKDIR /app
 
-# Copy package files
+# postgresql-client provides pg_isready, used by start.sh to wait for the DB
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
 
-# Install netcat
-RUN apt-get update && apt-get install -y netcat-openbsd
+RUN npm ci
 
-# Install dependencies
-RUN npm install
-
-# Copy project
 COPY . .
 
-# Generate Prisma client
+# Generate Prisma client targeting the container's OpenSSL version
 RUN npx prisma generate
 
-# Expose port
+RUN npm run build
+
 EXPOSE 3000
 
-# Start app
-CMD ["sh", "scripts/start.sh"]
+CMD ["npm", "run", "start:prod"]

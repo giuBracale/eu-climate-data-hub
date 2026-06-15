@@ -1,37 +1,18 @@
 #!/bin/sh
 
-echo " Waiting for PostgreSQL..."
+set -e
 
-until nc -z postgres 5432; do
-  sleep 1
+DB_HOST="${DB_HOST:-postgres}"
+DB_PORT="${DB_PORT:-5432}"
+
+echo "Waiting for PostgreSQL at ${DB_HOST}:${DB_PORT}..."
+until pg_isready -h "$DB_HOST" -p "$DB_PORT" -q; do
+  sleep 2
 done
+echo "PostgreSQL is ready."
 
-echo " Database is ready"
-
-echo " Running migrations..."
+echo "Running Prisma migrations..."
 npx prisma migrate deploy
 
-echo " Checking if data already exists..."
-
-COUNT=$(node -e "
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-(async () => {
-  const count = await prisma.climateData.count();
-  console.log(count);
-  process.exit(0);
-})();
-")
-
-if [ "$COUNT" -gt "0" ]; then
-  echo " Data already present, skipping ingestion and processing"
-else
-  echo " Running ingestion pipeline..."
-  node src/pipelines/worldbankIngestion.pipeline.js ITA
-
-  echo " Running processing pipeline..."
-  node src/pipelines/climateDataProcessingPipeline.js
-fi
-
-echo " Starting API..."
-node src/index.js
+echo "Starting API..."
+exec npm run start:prod
