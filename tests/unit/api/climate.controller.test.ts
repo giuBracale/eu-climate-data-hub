@@ -32,11 +32,11 @@ describe("Climate Controller", () => {
     jest.clearAllMocks()
   })
 
-  async function runHandler(
-    handler: RequestHandler,
+  async function runHandler<TParams extends Record<string, string>>(
+    handler: RequestHandler<TParams>,
     params: Record<string, string | undefined>
   ) {
-    const req = { params } as unknown as Request
+    const req = { params } as unknown as Request<TParams>
     const res = {
       json: jest.fn()
     } as unknown as Response

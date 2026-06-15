@@ -31,9 +31,7 @@ describe("Climate DTOs", () => {
         toClimateDataDto({
           country: "ITA",
           year: 2020,
-          gdp: null,
-          population: undefined,
-          co2: undefined
+          gdp: null
         })
       ).toEqual({
         country: "ITA",
