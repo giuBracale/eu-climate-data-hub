@@ -6,12 +6,12 @@ import {
 
 describe("Climate Validator", () => {
   describe("validateCountry", () => {
-    it("accepts three-character country codes", () => {
+    it("accepts configured country codes (case-insensitive)", () => {
       expect(() => validateCountry("ITA")).not.toThrow()
       expect(() => validateCountry("usa")).not.toThrow()
     })
 
-    it("rejects missing or incorrectly sized country codes", () => {
+    it("rejects country codes not in the configured list", () => {
       for (const country of ["", "IT", "ITAL"]) {
         expect(() => validateCountry(country)).toThrow(AppError)
       }

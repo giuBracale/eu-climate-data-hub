@@ -27,11 +27,11 @@ describe("Climate Data API", () => {
     expect(res.body).toHaveProperty("co2Change")
   })
 
-  it("GET invalid country should return 404", async () => {
+  it("GET unconfigured country should return 400", async () => {
     const res = await request(app)
       .get("/api/countries/XXX/climate-data")
 
-    expect(res.statusCode).toBe(404)
+    expect(res.statusCode).toBe(400)
     expect(res.body).toHaveProperty("error")
   })
 
