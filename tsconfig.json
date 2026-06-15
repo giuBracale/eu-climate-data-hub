@@ -36,34 +36,21 @@
     "paths": {
       "@/*": ["src/*"],
 
-      "@api/*": ["src/modules/climate/api/*"],
-      "@controllers/*": ["src/modules/climate/api/controllers/*"],
-      "@routes/*": ["src/modules/climate/api/routes/*"],
-      "@middleware/*": ["src/modules/shared/middleware/*"],
-      "@validators/*": ["src/modules/climate/api/validators/*"],
-      "@dto/*": ["src/modules/climate/api/dto/*"],
-
       "@app/*": ["src/app/*"],
       "@config/*": ["src/config/*"],
       "@docs/*": ["src/docs/*"],
 
-      "@domain/*": ["src/domain/*"],
-      "@services/*": ["src/domain/services/*"],
       "@errors/*": ["src/modules/shared/errors/*"],
+      "@middleware/*": ["src/modules/shared/middleware/*"],
+      "@utils/*": ["src/modules/shared/utils/*"],
 
-      "@generated/*": ["src/generated/*"],
-
-      "@infra/*": ["src/modules/infrastructure/*"],
       "@db/*": ["src/modules/infrastructure/database/*"],
       "@ai/*": ["src/modules/infrastructure/ai/*"],
       "@worldbank/*": ["src/modules/infrastructure/worldbank/*"],
 
       "@pipelines/*": ["src/modules/climate/pipelines/*"],
-      "@processing/*": ["src/modules/climate/processing/*"],
 
-      "@storage/*": ["src/storage/*"],
-
-      "@utils/*": ["src/modules/shared/utils/*"]
+      "@generated/*": ["src/generated/*"]
     }
   },
   "include": ["src", "scripts", "tests"],

@@ -1,14 +1,5 @@
 import { logger } from "@/modules/shared/utils/logger"
-
-type ClimateRecord = {
-  year: string | number
-  gdp?: number | null
-  population?: number | null
-  co2?: number | null
-  gdpValue?: number | null
-  populationValue?: number | null
-  co2Value?: number | null
-}
+import { ClimateRecord } from "@/types/types"
 
 type AIResponse = {
   insight: string
@@ -21,9 +12,9 @@ export async function getInsights(
   try {
     const normalizedData = dataset.map(record => ({
       year: String(record.year),
-      gdp: record.gdp ?? record.gdpValue ?? null,
-      population: record.population ?? record.populationValue ?? null,
-      co2: record.co2 ?? record.co2Value ?? null
+      gdp: record.gdp,
+      population: record.population,
+      co2: record.co2
     }))
 
     const response = await fetch("http://ai-processor:8000/analyze", {

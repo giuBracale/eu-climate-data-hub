@@ -1,13 +1,6 @@
 import { prisma } from "./prisma.client"
 import { ClimateData } from "@prisma/client"
-
-type ClimateRecord = {
-  country: string
-  year: string | number
-  gdp?: number | null
-  population?: number | null
-  co2?: number | null
-}
+import { ClimateRecord } from "@/types/types"
 
 export async function saveMany(records: ClimateRecord[]): Promise<void> {
   if (!records.length) return
@@ -15,10 +8,10 @@ export async function saveMany(records: ClimateRecord[]): Promise<void> {
   await prisma.climateData.createMany({
     data: records.map(r => ({
       country: r.country,
-      year: Number(r.year),
-      gdp: r.gdp ?? null,
-      population: r.population ?? null,
-      co2: r.co2 ?? null
+      year: r.year,
+      gdp: r.gdp,
+      population: r.population,
+      co2: r.co2
     })),
     skipDuplicates: true
   })

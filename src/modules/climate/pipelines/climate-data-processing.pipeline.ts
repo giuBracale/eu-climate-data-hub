@@ -1,8 +1,9 @@
 import fs from "fs"
 import path from "path"
 import { logger } from "@/modules/shared/utils/logger"
+import { ClimateRecord } from "@/types/types"
 
-import { saveMany, getByCountry } from "../../infrastructure/database/climate.repository"
+import { saveMany } from "../../infrastructure/database/climate.repository"
 
 const RAW_DIR = path.join(__dirname, "../../data/raw")
 
@@ -11,20 +12,10 @@ type RawItem = {
   value: number | null
 }
 
-type ClimateRecord = {
-  country: string
-  year: string
-  gdp?: number | null
-  population?: number | null
-  co2?: number | null
-}
-
 function loadData(country: string, file: string): RawItem[] {
   const filePath = path.join(RAW_DIR, country, file)
   const raw = fs.readFileSync(filePath, "utf-8")
-
   const parsed = JSON.parse(raw)
-
   return parsed[1] as RawItem[]
 }
 
@@ -42,10 +33,10 @@ function mergeCountryData(country: string): ClimateRecord[] {
       const year = item.date
 
       if (!dataset[year]) {
-        dataset[year] = { country, year }
+        dataset[year] = { country, year: Number(year), gdp: null, population: null, co2: null }
       }
 
-      dataset[year][field] = item.value ?? null
+      dataset[year]![field] = item.value ?? null
     })
   }
 
@@ -54,10 +45,7 @@ function mergeCountryData(country: string): ClimateRecord[] {
   insert(co2Data, "co2")
 
   return Object.values(dataset).filter(
-    d =>
-      (d.gdp !== null && d.gdp !== undefined) ||
-      (d.population !== null && d.population !== undefined) ||
-      (d.co2 !== null && d.co2 !== undefined)
+    d => d.gdp !== null || d.population !== null || d.co2 !== null
   )
 }
 
@@ -81,7 +69,7 @@ export async function runProcessing(): Promise<void> {
       await saveMany(dataset)
 
       logger.info({ country }, "Dataset saved")
-    } catch (err: any) {
+    } catch (err) {
       logger.error({ err, country }, "Error processing country")
     }
   }

@@ -25,23 +25,14 @@
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1",
-      "^@api/(.*)$": "<rootDir>/src/api/$1",
       "^@app/(.*)$": "<rootDir>/src/app/$1",
-      "^@controllers/(.*)$": "<rootDir>/src/api/controllers/$1",
-      "^@routes/(.*)$": "<rootDir>/src/api/routes/$1",
-      "^@middleware/(.*)$": "<rootDir>/src/api/middleware/$1",
-      "^@validators/(.*)$": "<rootDir>/src/api/validators/$1",
-      "^@dto/(.*)$": "<rootDir>/src/api/dto/$1",
-      "^@domain/(.*)$": "<rootDir>/src/domain/$1",
-      "^@services/(.*)$": "<rootDir>/src/domain/services/$1",
-      "^@errors/(.*)$": "<rootDir>/src/domain/errors/$1",
-      "^@infra/(.*)$": "<rootDir>/src/infrastructure/$1",
-      "^@db/(.*)$": "<rootDir>/src/modules/infrastructure/database/$1",
+      "^@config/(.*)$": "<rootDir>/src/config/$1",
+      "^@errors/(.*)$": "<rootDir>/src/modules/shared/errors/$1",
+      "^@middleware/(.*)$": "<rootDir>/src/modules/shared/middleware/$1",
       "^@utils/(.*)$": "<rootDir>/src/modules/shared/utils/$1",
-      "^@processing/(.*)$": "<rootDir>/src/processing/$1",
-      "^@ai/(.*)$": "<rootDir>/src/infrastructure/ai/$1",
-      "^@pipelines/(.*)$": "<rootDir>/src/pipelines/$1",
-      "^@config/(.*)$": "<rootDir>/src/config/$1"
+      "^@db/(.*)$": "<rootDir>/src/modules/infrastructure/database/$1",
+      "^@ai/(.*)$": "<rootDir>/src/modules/infrastructure/ai/$1",
+      "^@pipelines/(.*)$": "<rootDir>/src/modules/climate/pipelines/$1"
     },
     "globals": {
       "ts-jest": {
@@ -56,6 +47,7 @@
   "dependencies": {
     "@prisma/client": "^5.22.0",
     "axios": "^1.13.6",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "node-fetch": "^2.7.0",
@@ -67,6 +59,7 @@
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
