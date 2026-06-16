@@ -8,10 +8,13 @@ export function validateCountry(country: string): void {
   }
 }
 
+const MIN_YEAR = 1900
+const MAX_YEAR = new Date().getFullYear()
+
 export function validateYear(year?: number): void {
   if (year === undefined) return
 
-  if (!Number.isInteger(year)) {
-    throw new AppError("Invalid year", 400)
+  if (!Number.isInteger(year) || year < MIN_YEAR || year > MAX_YEAR) {
+    throw new AppError(`Year must be an integer between ${MIN_YEAR} and ${MAX_YEAR}`, 400)
   }
 }

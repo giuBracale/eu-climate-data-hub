@@ -13,11 +13,13 @@ export default function errorHandler(
 
   if (err instanceof AppError && err.isOperational) {
     return res.status(err.statusCode).json({
-      error: err.message
+      error: err.message,
+      message: err.message,
     })
   }
 
   return res.status(500).json({
-    error: "Internal Server Error"
+    error: "Internal Server Error",
+    message: "Internal Server Error",
   })
 }

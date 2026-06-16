@@ -42,6 +42,10 @@ app.get("/", (_req: Request, res: Response) => {
   })
 })
 
+app.use((_req: Request, res: Response) => {
+  res.status(404).json({ error: "Not Found" })
+})
+
 app.use(errorHandler)
 
 export default app
