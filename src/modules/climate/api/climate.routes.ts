@@ -8,6 +8,8 @@ import {
   getClimateInsights
 } from "@/modules/climate/api/climate.controller"
 
+import { getCountries } from "@/modules/climate/api/countries.controller"
+
 const router = Router()
 
 /**
@@ -77,6 +79,42 @@ const router = Router()
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
+/**
+ * @swagger
+ * /countries:
+ *   get:
+ *     summary: List all supported countries
+ *     tags: [Countries]
+ *     responses:
+ *       200:
+ *         description: Array of country objects
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   code:
+ *                     type: string
+ *                     example: ITA
+ *                   name:
+ *                     type: string
+ *                     example: Italy
+ *             example:
+ *               - code: ITA
+ *                 name: Italy
+ *               - code: FRA
+ *                 name: France
+ *               - code: DEU
+ *                 name: Germany
+ *               - code: ESP
+ *                 name: Spain
+ *               - code: USA
+ *                 name: United States
+ */
+router.get("/countries", getCountries)
+
 router.get("/countries/:country/climate-data", getAllClimateData)
 
 /**
