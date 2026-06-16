@@ -8,11 +8,13 @@ import { prisma } from "../modules/infrastructure/database/prisma.client"
 
 const app = express()
 
+const isDev = process.env.NODE_ENV !== "production"
+
 const allowedOrigins = process.env.CORS_ORIGINS
   ? process.env.CORS_ORIGINS.split(",").map(o => o.trim())
   : ["http://localhost:5173"]
 
-app.use(cors({ origin: allowedOrigins }))
+app.use(cors({ origin: isDev ? true : allowedOrigins }))
 app.use(express.json())
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 app.use("/api", climateRoutes)
