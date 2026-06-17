@@ -13,6 +13,11 @@ process.on("unhandledRejection", (reason) => {
   process.exit(1)
 })
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   logger.info({ port: PORT }, "Climate Data API running")
+})
+
+server.on("error", (err) => {
+  logger.error({ err }, "Server failed to start")
+  process.exit(1)
 })
