@@ -1,4 +1,3 @@
-/// <reference types="node" />
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
@@ -10,7 +9,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ES2020",
-    "types": ["node", "jest"],
+    "types": ["node"],
 
     // Other Outputs
     "sourceMap": true,
@@ -38,6 +37,6 @@
       "@db/*": ["src/modules/infrastructure/database/*"]
     }
   },
-  "include": ["src", "scripts", "tests"],
+  "include": ["src", "scripts"],
   "exclude": ["node_modules", "dist"]
 }
