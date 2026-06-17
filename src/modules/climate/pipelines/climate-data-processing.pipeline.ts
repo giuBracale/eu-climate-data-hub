@@ -5,7 +5,7 @@ import { ClimateRecord } from "@/types/types"
 
 import { saveMany } from "../../infrastructure/database/climate.repository"
 
-const RAW_DIR = path.join(__dirname, "../../data/raw")
+const RAW_DIR = path.join(__dirname, "../../../../data/raw")
 
 type RawItem = {
   date: string

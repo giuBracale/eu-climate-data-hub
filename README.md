@@ -1,196 +1,192 @@
-# Climate Hub Core
+# Climate Hub
 
-A backend project for ingesting, processing, and exposing climate and economic data sourced from public datasets.
+REST API and web frontend for exploring GDP, population, and CO₂ emission trends sourced from the World Bank Open Data API. The backend ingests and stores the data in PostgreSQL and exposes it through a REST API. The frontend visualises it with interactive time-series charts.
 
-Built with Node.js, TypeScript, Express, Prisma, and PostgreSQL.
+Two separate repositories make up the project. This one (**ClimateHubAPI**) is the backend.
 
----
-
-## Overview
-
-The system collects public climate and economic indicators (CO₂ emissions, GDP, population) for five countries (ITA, FRA, DEU, ESP, USA), processes them through ETL pipelines, persists them in PostgreSQL, and exposes them through a REST API.
-
-```
-World Bank API
-  → Ingestion Pipeline   (fetch raw JSON per country/indicator)
-  → Processing Pipeline  (merge, normalise, persist)
-  → PostgreSQL           (via Prisma)
-  → REST API             (Express + TypeScript)
-```
-
----
-
-## Current Features
-
-- **Data ingestion** — fetches GDP, population, and CO₂ data from the World Bank API per country
-- **Processing pipeline** — merges raw datasets, fills nulls, upserts into PostgreSQL
-- **REST API** — query endpoints for climate and economic data per country
-- **Trend analysis** — percentage growth between the earliest and latest valid records
-- **Metrics calculation** — pre-computed per-country growth metrics with hash-based idempotency
-- **Insights endpoint** — backed by a separate FastAPI service
-- **Swagger UI** — auto-generated OpenAPI documentation
-- **Health endpoint** — reports database connectivity status
-- **Docker support** — full `docker compose` setup including Postgres, the API, and the AI processor
-- **Test suite** — unit, integration, and DTO layers
-
----
-
-## Architecture
-
-### Stack
-
-- **Runtime**: Node.js 20 (Debian Bookworm)
-- **Language**: TypeScript (strict mode, `exactOptionalPropertyTypes`)
-- **Framework**: Express 5
-- **ORM**: Prisma 5
-- **Database**: PostgreSQL 15
-- **AI processor**: FastAPI (Python 3.11, separate container)
-- **Documentation**: swagger-jsdoc + swagger-ui-express
-
-### Layer responsibilities
-
-| Layer | Location | Responsibility |
-|---|---|---|
-| API | `src/modules/climate/api/` | Routes, controllers, DTOs, validation |
-| Application | `src/modules/climate/application/` | Business logic, use cases |
-| Infrastructure | `src/modules/infrastructure/` | Prisma repositories, World Bank client, AI client |
-| Shared | `src/modules/shared/` | Error classes, middleware, logger, utilities |
-| Pipelines | `src/modules/climate/pipelines/`, `src/modules/worldbank/` | ETL steps |
-| Jobs | `src/jobs/` | CLI entry-points for ingestion and metrics |
+**Live:** [climate-hub-web.vercel.app](https://climate-hub-web.vercel.app) · [API on Render](https://eu-climate-data-hub.onrender.com)
 
 ---
 
 ## Project Structure
 
-```
-src/
-├── app/                        # Express wiring (CORS, routes, health check)
-├── config/                     # Countries list, World Bank indicators
-├── docs/                       # Swagger spec generation
-├── index.ts                    # Process entry-point
-├── jobs/                       # CLI runners for ingestion and metrics update
-├── modules/
-│   ├── climate/
-│   │   ├── api/                # Controllers, routes, DTOs, validators
-│   │   ├── application/        # Service layer and use cases
-│   │   └── pipelines/          # Data processing pipeline
-│   ├── infrastructure/
-│   │   ├── ai/                 # AI insights client
-│   │   ├── database/           # Prisma repositories
-│   │   └── worldbank/          # World Bank API client
-│   ├── shared/                 # AppError, asyncHandler, errorHandler, logger
-│   └── worldbank/              # Ingestion pipeline
-├── types/                      # Shared domain types
-prisma/
-├── schema.prisma
-└── migrations/
-scripts/
-└── start.sh                    # Container startup (wait → migrate → start)
-```
+### ClimateHubAPI (this repository)
+
+Node.js REST API built with TypeScript, Express 5, and Prisma.
+
+- **Ingestion pipeline** — fetches raw data from the World Bank API per country and indicator, writes it to JSON files under `data/raw/`
+- **Processing pipeline** — merges raw files by year, upserts records into the `ClimateData` table
+- **Metrics job** — computes GDP, population, and CO₂ growth percentages per country, writes to `ClimateMetrics`
+- **REST API** — endpoints for country data, trends, and historical records; Swagger UI at `/api-docs`
+
+### ClimateHubWeb
+
+React frontend built with Vite, TanStack Query, Recharts, and Tailwind CSS v4.
+
+- Country browser with summary cards
+- Per-country detail view: time-series charts for GDP, population, and CO₂
+- Year-by-year data selector
+- UI localisation: English and Italian (i18next)
 
 ---
 
-## Running Locally
+## Architecture
 
-### Prerequisites
-
-- Node.js 20+
-- PostgreSQL 15 (or Docker)
-- A `.env` file — copy from `.env.example` and fill in `DATABASE_URL`
-
-### Install and build
-
-```bash
-npm install
-npm run build
+```
+User
+ ↓
+Vercel (React/Vite frontend)
+ ↓
+Render (Node.js/Express API)
+ ↓
+Neon (PostgreSQL)
 ```
 
-### Start (development, ts-node)
+**Vercel** serves the compiled frontend. `VITE_API_URL` is set at build time to point at the Render service URL.
+
+**Render** runs the compiled Node.js API as a Web Service. TypeScript is compiled to `dist/` at build time; the runtime executes `dist/src/index.js`. Migrations are applied with `prisma migrate deploy` before each deploy.
+
+**Neon** is the managed PostgreSQL host. Two tables: `ClimateData` (one row per country/year) and `ClimateMetrics` (one row per country with pre-computed growth figures).
+
+---
+
+## Data Sources
+
+All data is from the [World Bank Open Data API](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-using-the-api).
+
+| Indicator | World Bank code | Unit |
+|-----------|-----------------|------|
+| GDP | `NY.GDP.MKTP.CD` | Current USD |
+| Population | `SP.POP.TOTL` | Total persons |
+| CO₂ emissions | `EN.GHG.CO2.MT.CE.AR5` | Mt CO₂ equivalent (AR5 methodology) |
+
+Historical coverage depends on World Bank data availability. Some years have `null` for one or more indicators, particularly CO₂.
+
+Countries currently configured: **ITA, FRA, DEU, ESP, USA**
+
+---
+
+## API
+
+Full reference: [docs/api.md](docs/api.md) · Interactive: `/api-docs` (Swagger UI)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/health` | Database connectivity check |
+| `GET` | `/api/countries` | List supported countries |
+| `GET` | `/api/countries/:country/climate-data` | All records for a country |
+| `GET` | `/api/countries/:country/climate-data/latest` | Most recent record with at least one non-null value |
+| `GET` | `/api/countries/:country/climate-data/trend` | Growth percentages between first and last valid records |
+| `GET` | `/api/countries/:country/climate-data/year/:year` | Record for a specific year |
+| `GET` | `/api/countries/:country/insights` | Optional country summary (requires separate AI service, not active in production) |
+
+Country codes are case-insensitive. Unrecognised codes return `400 Invalid country code`.
+
+---
+
+## Local Development
+
+### Backend
 
 ```bash
+cp .env.example .env
+# Fill in DATABASE_URL with your PostgreSQL connection string
+npm install
 npm start
 ```
 
-### Start (production, compiled dist)
+The API starts on `http://localhost:3000` by default.
+
+### Frontend
 
 ```bash
-npm run start:prod
+# In the ClimateHubWeb directory
+cp .env.example .env
+# Set VITE_API_URL=http://localhost:3000
+npm install
+npm run dev
 ```
 
-### Run with Docker
+### Database
 
-Starts PostgreSQL, the AI processor, runs migrations, and launches the API:
+Apply pending migrations against a local PostgreSQL instance:
 
 ```bash
-docker compose up --build
+npx prisma migrate dev
 ```
-
-> The API is available at `http://localhost:3001`.  
-> Data is **not** pre-loaded by Docker. Run the ingestion and processing pipelines separately after the stack is up (see below).
 
 ---
 
-## Data Ingestion (manual, one-time)
+## Environment Variables
 
-Ingestion must be run after the database is available.
+### Backend
 
-**1. Fetch raw data from World Bank API:**
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `DATABASE_URL` | Yes | — | PostgreSQL connection string |
+| `PORT` | No | `3000` | Port the API listens on |
+| `NODE_ENV` | No | `development` | `production` enables JSON log format (pino) |
+| `CORS_ORIGINS` | No | `http://localhost:5173` | Comma-separated list of allowed origins |
+| `AI_SERVICE_URL` | No | `http://localhost:8000` | Base URL of the AI insights processor |
+| `SWAGGER_SERVER_URL` | No | `http://localhost:3000/api` | Server URL shown in Swagger UI |
+
+Copy `.env.example` to `.env` and fill in secrets before running locally.
+
+### Frontend
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VITE_API_URL` | Yes | Base URL of the backend API (e.g. `http://localhost:3000`) |
+
+---
+
+## Data Ingestion
+
+Ingestion is manual. There is no scheduled job. Run the three steps in order after the database is available.
 
 ```bash
+# Step 1 — fetch from World Bank API → data/raw/{country}/{indicator}.json
 npm run ingest
-```
 
-Fetches GDP, population, and CO₂ data for all configured countries and saves them as JSON files under `data/raw/`.
+# Step 2 — merge raw files by year, upsert into ClimateData table
+npm run process:climate
 
-**2. Process and persist to PostgreSQL:**
-
-```bash
-npm run process:data
-```
-
-Merges the raw JSON files and upserts records into the `ClimateData` table.
-
-**3. (Optional) Recalculate metrics:**
-
-```bash
+# Step 3 — compute growth metrics, write to ClimateMetrics table
 npm run metrics
 ```
 
-Computes growth percentages and updates the `ClimateMetrics` table. Safe to run repeatedly (hash-based skip if data hasn't changed).
+Steps 1 and 2 are decoupled: you can inspect or correct the raw JSON files before loading them into the database. Step 3 is idempotent — countries whose dataset hasn't changed since the last run are skipped (SHA-256 hash comparison).
 
 ---
 
-## API Endpoints
+## Deployment
 
-Base URL: `http://localhost:3000` (local) · `http://localhost:3001` (Docker)
+### Backend — Render
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/health` | Database connectivity status |
-| `GET` | `/api/countries/:country/climate-data` | All records for a country |
-| `GET` | `/api/countries/:country/climate-data/latest` | Most recent record with at least one metric |
-| `GET` | `/api/countries/:country/climate-data/trend` | Growth percentages (GDP, population, CO₂) |
-| `GET` | `/api/countries/:country/climate-data/year/:year` | Record for a specific year |
-| `GET` | `/api/countries/:country/insights` | Narrative summary from the insights service |
+**Build command:**
+```
+npm ci && npx prisma generate && npm run build
+```
 
-Supported country codes: `ITA`, `FRA`, `DEU`, `ESP`, `USA` (case-insensitive).
+`prisma generate` must run at build time so Prisma can bundle the correct query engine binary for the deployment environment.
 
-### Example
+**Start command:**
+```
+npm run start:prod
+```
 
+Migrations run automatically via `prisma migrate deploy` during deployment. Run this manually only when provisioning a new database:
 ```bash
-curl http://localhost:3001/api/countries/ITA/climate-data/trend
+DATABASE_URL=<neon-url> npx prisma migrate deploy
 ```
 
----
+### Frontend — Vercel
 
-## API Documentation
+Framework preset: **Vite**. Set `VITE_API_URL` in Vercel's environment settings to the Render service URL.
 
-Swagger UI is served at:
+### Database — Neon
 
-```
-http://localhost:3000/api-docs    (local)
-http://localhost:3001/api-docs    (Docker)
-```
+PostgreSQL 15. Neon connection strings include `?sslmode=require` — keep it in `DATABASE_URL`.
 
 ---
 
@@ -200,38 +196,18 @@ http://localhost:3001/api-docs    (Docker)
 npm test
 ```
 
----
-
-## Environment Variables
-
-See `.env.example` for the full reference. Key variables:
-
-| Variable | Default | Description |
-|---|---|---|
-| `DATABASE_URL` | — | PostgreSQL connection string (required) |
-| `PORT` | `3000` | API listen port |
-| `NODE_ENV` | `development` | Controls log format |
-| `CORS_ORIGINS` | `http://localhost:5173` | Comma-separated allowed origins |
-| `AI_SERVICE_URL` | `http://localhost:8000` | AI processor base URL |
-| `SWAGGER_SERVER_URL` | `http://localhost:3000/api` | Server URL shown in Swagger UI |
+The current test suite covers unit and API-level behaviour: controllers, validators, DTOs, service functions, and the metrics use case.
 
 ---
 
-## Design Decisions
+## Limitations
 
-- **Two-step pipeline** (ingest → process) decouples World Bank API availability from database writes. Raw files can be corrected before processing.
-- **Hash-based metrics idempotency** — metrics updates skip countries whose dataset hasn't changed, making the job safe to run on a schedule.
-- **Static country list** — only configured country codes are accepted by the API. Unrecognised codes return `400` before any DB access.
-- **No caching** — the dataset is small and largely read-only; every request hits Postgres directly.
-
----
-
-## Roadmap
-
-- React dashboard for data visualisation
-- Additional World Bank indicators
-- Extended country coverage
-- Scheduled ingestion (cron / job queue)
+- **Countries are hardcoded.** Only ITA, FRA, DEU, ESP, USA are supported. Adding a country requires changing `src/config/countries.ts` and re-running ingestion and processing.
+- **No scheduled ingestion.** Data must be refreshed manually by re-running the three pipeline steps.
+- **Historical gaps.** Some years have `null` values for one or more indicators depending on World Bank data availability.
+- **AI insights not deployed.** `/api/countries/:country/insights` requires a separately running FastAPI service. It is not part of the current production setup; the endpoint returns `503` when the AI service is unreachable.
+- **No authentication.** All API endpoints are publicly accessible.
+- **No caching.** Every request hits Postgres directly. Acceptable for a small, read-mostly dataset, but worth noting.
 
 ---
 
