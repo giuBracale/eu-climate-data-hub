@@ -7,7 +7,7 @@ export default function errorHandler(
   err: Error | AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): Response {
   logger.error({ err }, "Unhandled error")
 

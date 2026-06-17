@@ -35,11 +35,11 @@ describe("Climate Data API", () => {
     expect(res.body).toHaveProperty("error")
   })
 
-  it("GET invalid year should return 404", async () => {
+  it("GET out-of-range year should return 400", async () => {
     const res = await request(app)
       .get("/api/countries/ITA/climate-data/year/9999")
 
-    expect(res.statusCode).toBe(404)
+    expect(res.statusCode).toBe(400)
     expect(res.body).toHaveProperty("error")
   })
 })

@@ -10,8 +10,8 @@ import { ParsedQs } from "qs"
 
 export type AsyncHandler<
   P = ParamsDictionary,
-  ResBody = any,
-  ReqBody = any,
+  ResBody = unknown,
+  ReqBody = unknown,
   ReqQuery = ParsedQs
 > = (
   req: Request<P, ResBody, ReqBody, ReqQuery>,
@@ -21,8 +21,8 @@ export type AsyncHandler<
 
 export default function asyncHandler<
   P = ParamsDictionary,
-  ResBody = any,
-  ReqBody = any,
+  ResBody = unknown,
+  ReqBody = unknown,
   ReqQuery = ParsedQs
 >(
   fn: AsyncHandler<P, ResBody, ReqBody, ReqQuery>

@@ -135,7 +135,20 @@ describe("Climate Controller", () => {
       year: "2020.5"
     })
 
-    expectAppError(next, "Invalid year", 400)
+    const currentYear = new Date().getFullYear()
+    expectAppError(next, `Year must be an integer between 1900 and ${currentYear}`, 400)
+    expect(getByCountryMock).not.toHaveBeenCalled()
+    expect(json).not.toHaveBeenCalled()
+  })
+
+  it("rejects a year out of range", async () => {
+    const { json, next } = await runHandler(getClimateDataByYear, {
+      country: "ITA",
+      year: "9999"
+    })
+
+    const currentYear = new Date().getFullYear()
+    expectAppError(next, `Year must be an integer between 1900 and ${currentYear}`, 400)
     expect(getByCountryMock).not.toHaveBeenCalled()
     expect(json).not.toHaveBeenCalled()
   })

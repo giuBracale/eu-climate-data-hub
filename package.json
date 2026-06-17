@@ -10,7 +10,8 @@
     "ingest": "ts-node -r tsconfig-paths/register ./scripts/jobs/runWorldBankIngestion.ts",
     "build": "tsc && tsc-alias",
     "start:prod": "node dist/src/index.js",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "lint": "eslint ."
   },
   "jest": {
     "preset": "ts-jest",
@@ -64,6 +65,9 @@
     "@types/supertest": "^7.2.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "@typescript-eslint/eslint-plugin": "^8.61.1",
+    "@typescript-eslint/parser": "^8.61.1",
+    "eslint": "^10.5.0",
     "jest": "^30.3.0",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.9",

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"/home/giuseppe/Scrivania/AProgetti/Progetti Pubblici Git Hub/Data Integration/ClimateHubAPI/\" 2>/dev/null || echo \"Directory not found\")",
+      "Read(//home/giuseppe/Scrivania/AProgetti/Progetti Pubblici Git Hub/Data Integration/ClimateHubAPI/**)",
+      "Read(//home/giuseppe/Scrivania/AProgetti/Progetti Pubblici Git Hub/Data Integration/**)",
+      "Read(//home/giuseppe/Scrivania/AProgetti/Progetti Pubblici Git Hub/**)",
+      "Bash(find \"/home/giuseppe\" -name \"package.json\" -not -path \"*/node_modules/*\" -not -path \"*/.git/*\" 2>/dev/null | grep -i \"climate\\\\|hub\\\\|frontend\\\\|client\" | head -20)",
+      "Read(//home/giuseppe/**)",
+      "Bash(npm install *)",
+      "Bash(mkdir -p \"/home/giuseppe/Scrivania/AProgetti/Progetti Pubblici Git Hub/Data Integration/ClimateHubWeb/src/i18n\")",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(npm test *)"
+    ],
+    "additionalDirectories": [
+      "/home/giuseppe/Scrivania/AProgetti/Progetti Pubblici Git Hub/Data Integration/ClimateHubWeb/src",
+      "/home/giuseppe/Scrivania/AProgetti/Progetti Pubblici Git Hub/Data Integration/ClimateHubWeb"
+    ]
+  }
+}
