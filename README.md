@@ -4,7 +4,10 @@ REST API and web frontend for exploring GDP, population, and CO₂ emission tren
 
 Two separate repositories make up the project. This one (**ClimateHubAPI**) is the backend.
 
-**Live:** [climate-hub-web.vercel.app](https://climate-hub-web.vercel.app) · [API on Render](https://eu-climate-data-hub.onrender.com)
+**Live:**
+- Frontend: [climate-hub-web.vercel.app](https://climate-hub-web.vercel.app)
+- API: [eu-climate-data-hub.onrender.com](https://eu-climate-data-hub.onrender.com)
+- Monitoring: UptimeRobot
 
 ---
 
@@ -40,6 +43,10 @@ Vercel (React/Vite frontend)
 Render (Node.js/Express API)
  ↓
 Neon (PostgreSQL)
+
+UptimeRobot
+ ↓
+GET /health every 10 minutes
 ```
 
 **Vercel** serves the compiled frontend. `VITE_API_URL` is set at build time to point at the Render service URL.
@@ -187,6 +194,15 @@ Framework preset: **Vite**. Set `VITE_API_URL` in Vercel's environment settings 
 ### Database — Neon
 
 PostgreSQL 15. Neon connection strings include `?sslmode=require` — keep it in `DATABASE_URL`.
+
+### Monitoring
+
+The production API is monitored through UptimeRobot health checks against the `/health` endpoint.
+
+The monitor performs periodic requests to:
+https://eu-climate-data-hub.onrender.com/health
+
+This provides basic uptime verification and reduces the impact of Render free-tier cold starts by keeping the service active.
 
 ---
 
